@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body>
+<div th:fragment="delete_todo_dialog">
+    <!--https://getbootstrap.com/docs/3.4/javascript/-->
+    <!--https://www.youtube.com/watch?v=St4-x9Cz04A-->
+    <div class="modal fade modal-delete" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body my-0 my-sm0 bg-dark" style="color: white; font-size: 13px">
+                    Do you really want to delete this task?
+                </div>
+                <div class="modal-footer bg-dark" style="color: white">
+                    <button style="font-size: 13px" type="button"
+                            class="btn my-0 my-sm0 btn-dark" data-dismiss="modal">Cancel
+                    </button>
+                    <a id="delete-id" href="javascript:void(0);">
+                        <span class="btn btn-danger" value="delete">Delete</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

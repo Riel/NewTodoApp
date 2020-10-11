@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body>
+<div th:fragment="add_instant_dialog">
+    <div class="modal fade modal-confirm" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body my-0 my-sm0 bg-dark" style="color: white; font-size: 13px">
+                    The task has been successfully added
+                </div>
+                <div class="modal-footer bg-dark" style="color: white">
+                    <button style="font-size: 13px" type="button"
+                            class="btn my-0 my-sm0 btn-info" onclick="addAnother();">Add another
+                    </button>
+                    <a th:href="'/'" class="btn my-0 my-sm0 btn-secondary" style="font-size: 13px" role="button">Return to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

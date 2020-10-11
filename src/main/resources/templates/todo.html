@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo</title>
+    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="container m-0" style="background: #343a40!important">
+<div>
+    <H3 style="color: lightgray">Todo</H3>
+</div>
+
+<form class="form-dark" action="#" id="todo-form" th:action="@{|/todo/add|}" method="post" th:object="${todo}">
+    <table style="table-layout: auto" >
+        <tbody style="display: table; width: 100%">
+        <tr class="show-edit" style="display:none">
+            <td><label style="color: lightgray" class="mr-2">Task id: </label></td>
+            <td><label style="color: lightgray" th:text="*{getId()}"></label></td>
+        </tr>
+        <tr class="show-edit" style="display:none">
+            <td><label style="color: lightgray" class="mr-2">Created at: </label></td>
+            <td><label style="color: lightgray" th:text="*{getCreationDate()}"></label></td>
+        </tr>
+        <tr>
+            <td><label class="mr-2" for="title" style="color: lightgray">Title: </label></td>
+            <td><input placeholder="... add title" style="width: 300%" type="text" id="title" th:field="*{title}" required autofocus>
+            </td>
+        </tr>
+        <tr class="show-add" style="display:none">
+            <td></td>
+            <td><a style="font-size: 13px; text-align: center; width: 300%" class="btn btn-outline-warning my-0 my-sm0 d-flex btn-sm"
+                   href="#" onclick="javascript:addInstant()">Add instant</a></td>
+        </tr>
+        <tr>
+            <td><label class="mr-2" style="color: lightgray" for="description">Description: </label></td>
+            <td>
+                <textarea rows="5" maxlength="255"
+                          style="width: 300%; box-sizing: border-box"
+                          placeholder="... add description"
+                          id="description"
+                          th:field="*{description}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td><label class="mr-2" style="color: lightgray" for="link">External link: </label></td>
+            <td><input placeholder="... add link" type="text" id="link" th:field="*{link}"></td>
+        </tr>
+        <tr>
+            <td><label class="mr-2" style="color: lightgray" >Owner: </label></td>
+            <!-- th:field does not work with select:
+             https://www.baeldung.com/thymeleaf-select-option -->
+            <td><select name=owner required>
+                <option value="" selected disabled hidden>Select an option</option>
+                <option th:each="owner : ${owners}"
+                        th:text="${owner.getUsername()}"
+                        th:value="${owner.getId()}"
+                        th:selected="${owner.getUsername().equals(todo.getAssignee().getUsername())}">
+                </option>
+            </select></td>
+        </tr>
+        <tr>
+            <td><label class="mr-2" style="color: lightgray" >Project: </label></td>
+            <td><select name="project" required>
+                <option value="" selected disabled hidden>Select an option</option>
+                <option th:each="project : ${projects}"
+                        th:text="${project}"
+                        th:value="${project}"
+                        th:selected="${todo.getProject().equals(project)}">
+                </option>
+            </select></td>
+        </tr>
+        <tr>
+            <td><label class="mr-2" style="color: lightgray" >Context: </label></td>
+            <td><select name="context" required>
+                <option value="" selected disabled hidden>Select an option</option>
+                <option th:each="context : ${contexts}"
+                        th:text="${context}"
+                        th:value="${context}"
+                        th:selected="${todo.getContext().equals(context)}">
+                </option>
+            </select></td>
+        </tr>
+        <tr>
+            <td><label class="mr-2" style="color: lightgray" for="date">Due date: </label></td>
+            <td><input type="date" id="date" th:field="*{dueDate}"
+                       placeholder="yyyy.mm.dd." pattern="\d{4}/\d{2}/\d{2}"
+            ></td>
+        </tr>
+        <tr>
+            <td><label class="mr-2" style="color: lightgray" >Priority: </label></td>
+            <td><select name="prio" required>
+                <option value="" selected disabled hidden>Select an option</option>
+                <option th:unless="(${displayMode}=='edit' and ${todo.getProject()}=='') or ${displayMode}=='add'"
+                        th:each="priority : ${priorities}"
+                        th:text="${priority}"
+                        th:value="${priority.name()}"
+                        th:selected="${todo.getPriority().equals(priority)}">
+                <option th:if="(${displayMode}=='edit' and ${todo.getProject()}=='') or ${displayMode}=='add'"
+                        th:each="priority : ${priorities}"
+                        th:text="${priority}"
+                        th:value="${priority.name()}">
+                </option>
+            </select></td>
+        </tr>
+        <tr>
+            <td><label class="mr-2" style="color: lightgray" >Status: </label></td>
+            <td><select name="status" required>
+                <option value="" selected disabled hidden>Select an option</option>
+                <option th:unless="(${displayMode}=='edit' and ${todo.getProject()}=='') or ${displayMode}=='add'"
+                        th:each="status : ${statuses}"
+                        th:text="${status}"
+                        th:value="${status.name()}"
+                        th:selected="${todo.getStatus().equals(status)}">
+                <option th:if="(${displayMode}=='edit' and ${todo.getProject()}=='') or ${displayMode}=='add'"
+                        th:each="status : ${statuses}"
+                        th:text="${status}"
+                        th:value="${status.name()}">
+                </option>
+            </select></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <input id="add-todo" class="col-lg-1 btn btn-warning mt-3" style="margin-right: 20px" type="submit" value="Save">
+        <a class="col-lg-1 btn btn-warning mt-3" style="background-color: gray; border-color: gray; text-decoration: none; color: white" th:href="'/'">Cancel</a>
+    </div>
+
+    <div th:insert="fragments/frg_add_instant_dialog :: add_instant_dialog"></div>
+
+</form>
+<script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var id = /*[[${todo.getId()}]]*/ 0;
+    var displayMode = /*[[${displayMode}]]*/ "add";
+    var instantTaskAdded = /*[[${instantTaskAdded}]]*/ "no";
+    /*]]>*/
+</script>
+<script th:inline="javascript" src="/js/todoFunctions.js"></script>
+</body>
+</html>

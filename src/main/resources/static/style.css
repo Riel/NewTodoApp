@@ -1,0 +1,26 @@
+table tr td{
+    height: 10px !important;
+    padding:0px !important;
+    margin: 4px !important;
+    vertical-align: center !important;
+}
+
+th {
+    padding:4px 0px!important;
+}
+
+.btn {
+    padding: 2px !important;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: lightgrey;
+}
+
+.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+    background-color: darkgray;
+}
+
+.table-hover tbody tr:hover td {
+    background-color: whitesmoke;
+}

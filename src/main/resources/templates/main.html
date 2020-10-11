@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyTasks</title>
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/>
+
+</head>
+
+<body style="background: #343a40!important; padding-top: 70px">
+
+<div th:insert="fragments/frg_navbar :: nav_bar_with_search_form"></div>
+<div th:insert="fragments/frg_table :: todo_list"></div>
+
+</body>
+<script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js"></script>
+<script src="/js/mainFunctions.js"></script>
+</body>
+</html>

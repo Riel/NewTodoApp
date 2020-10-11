@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body>
+<div th:fragment="nav_bar_with_search_form">
+    <nav class="navbar navbar-expand-md fixed-top bg-dark">
+        <form name="searchForm" action="/" th:method="get" style="vertical-align: bottom">
+            <select name="owner" id="owner" onchange="document.forms['searchForm'].submit();" style="display: inline">
+                <option value="0" selected disabled hidden>Select owner</option>
+                <option th:each="owner : ${owners}"
+                        th:text="${owner}"
+                        th:value="${owner}"
+                        th:selected="${owner.equals(selectedOwner)}">
+                </option>
+            </select>
+            <select name=project id="project" onchange="document.forms['searchForm'].submit();" style="display: inline">
+                <option value="0" selected disabled hidden>Select project</option>
+                <option th:each="project : ${projects}"
+                        th:text="${project}"
+                        th:value="${project}"
+                        th:selected="${project.equals(selectedProject)}">
+                </option>
+            </select>
+            <select name=context id="context" onchange="document.forms['searchForm'].submit();" style="display: inline">
+                <option value="0" selected disabled hidden>Select context</option>
+                <option th:each="context : ${contexts}"
+                        th:text="${context}"
+                        th:value="${context}"
+                        th:selected="${context.equals(selectedContext)}">
+                </option>
+            </select>
+        </form>
+        <label style="color: lightgray; margin: 4px 8px 4px 14px" th:text="${items}"/>
+        <label style="color: lightgray; margin: 3px 6px 0px 0px; font-size: 13px">items found</label>>
+
+
+        <div class="collapse navbar-collapse" style="display: flex; justify-content: flex-end">
+            <ul class="nav navbar-nav d-block">
+                <li class="nav-item">
+                    <a class="btn-link" th:href="@{/settings}" th:text="settings"/>
+                </li>
+                <li class="nav-item d-block">
+                    <a style="font-size: 13px" class="btn btn-outline-warning my-0 my-sm0 d-flex btn-sm"
+                       th:href="@{|/todo/add|}">Add new task</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+</body>
+</html>
