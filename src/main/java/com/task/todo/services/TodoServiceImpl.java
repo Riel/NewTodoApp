@@ -14,7 +14,6 @@ import com.task.todo.models.User;
 import com.task.todo.repositories.ContextRepository;
 import com.task.todo.repositories.ProjectRepository;
 import com.task.todo.repositories.TodoRepository;
-import com.task.todo.repositories.UserRepository;
 import com.task.todo.utilities.DateUtilities;
 import com.task.todo.utilities.TodoColorizer;
 import java.time.LocalDate;
@@ -88,13 +87,10 @@ public class TodoServiceImpl {
 
   //region Modify todos
   public void saveInstantTodo(String title){
-    /*
-    List<User> owners = new ArrayList();
-    getUsers().forEach(o -> owners.add(o));
-    Todo instantTodo = new Todo(title, "", "not set", "not set", Priority.MUST, Status.NOT_STARTED, LocalDate
-        .now(), owners.get(0));
-
-    saveTodo(instantTodo);*/
+    Todo instantTodo = new Todo(title, "", null, null,
+        Priority.MUST, Status.NOT_STARTED, LocalDate.now(),
+        userService.getAuthenticatedUserWithoutProperties());
+    todoRepository.save(instantTodo);
   }
 
   public void saveNewTodo(FullTodoDTO dto) {
@@ -148,10 +144,12 @@ public class TodoServiceImpl {
   private FullTodoDTO convertTodoToFullTodoDto(Todo todo){
     ModelMapper mapper = new ModelMapper();
     FullTodoDTO dto = new FullTodoDTO();
+    Project project = todo.getProject();
+    Context todoContext = todo.getContext();
     mapper.createTypeMap(Todo.class, FullTodoDTO.class)
         .setPostConverter(context -> {
-          context.getDestination().setProject(todo.getProject().getName());
-          context.getDestination().setContext(todo.getContext().getName());
+          context.getDestination().setProject(project == null ? "not set" : project.getName());
+          context.getDestination().setContext(todoContext == null ? "not set" : todoContext.getName());
           return context.getDestination();
         }).map(todo, dto);
     return dto;

@@ -19,29 +19,24 @@ public class TodoColorizer {
 
 
   public String getContextDisplayColor(){
-    Status status = todo.getStatus();
-    String project = todo.getProject().getName();
-
-    if(status.ordinal() == 4){
-      return TodoColors.GRAY;
-    } else if (project == null || "not set".equals(project)) {
+    if (todo.getProject() == null){
       return TodoColors.BUTTON_RED;
     }
 
-    return TodoColors.WHITE;
+    return todo.getStatus().ordinal() == 4
+        ? TodoColors.GRAY
+        : TodoColors.WHITE;
   }
 
   public String getProjectDisplayColor(){
-    Status status = todo.getStatus();
-    String project = todo.getProject().getName();
-
-    if(status.ordinal() == 4){
-      return TodoColors.GRAY;
-    } else if (project == null || "not set".equals(project)) {
+    // TODO: remove duplication
+    if (todo.getProject() == null){
       return TodoColors.BUTTON_RED;
     }
 
-    return TodoColors.WHITE;
+    return todo.getStatus().ordinal() == 4
+        ? TodoColors.GRAY
+        : TodoColors.WHITE;
   }
 
   public String getDueDateDisplayColor(){

@@ -40,9 +40,9 @@
             <td th:style="'padding: 4px;' + (${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: white')"
                 th:text="${todo.getAssignee().getUsername()}"/>
             <td th:style="'padding: 4px;' + ${todo.getProjectDisplayColor()}"
-                th:text="${todo.getProject()}"/>
+                th:text="${todo.getProject()} == null ? 'not set' : ${todo.getProject()}"/>
             <td th:style="'padding: 4px;' + ${todo.getContextDisplayColor()}"
-                th:text="${todo.getContext()}"/>
+                th:text="${todo.getContext()} == null ? 'not set' : ${todo.getContext()}"/>
             <td th:style="'padding: 4px;' + ${todo.getDueDateDisplayColor()}"
                 th:text="${todo.getDueDisplayDate()}" />
             <td th:style="'padding: 4px;' + ${todo.getPriorityDisplayColor()}"
