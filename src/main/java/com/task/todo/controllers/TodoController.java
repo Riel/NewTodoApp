@@ -1,7 +1,7 @@
 package com.task.todo.controllers;
 
-import com.task.todo.dtos.DisplayTodoDTO;
-import com.task.todo.models.Todo;
+import com.task.todo.dtos.FullTodoDTO;
+import com.task.todo.dtos.SimpleTodoDTO;
 import com.task.todo.services.SettingServiceImpl;
 import com.task.todo.services.TodoServiceImpl;
 import com.task.todo.services.UserServiceImpl;
@@ -34,7 +34,7 @@ public class TodoController {
                             @RequestParam (required = false) String project,
                             @RequestParam (required = false) String context){
 
-    List<DisplayTodoDTO> todoViewModels = todoService.getFilteredTodos(owner, project, context);
+    List<SimpleTodoDTO> todoViewModels = todoService.getFilteredTodos(owner, project, context);
 
     model.addAttribute("todos", todoViewModels);
     model.addAttribute("owners", userService.getUserNames());
@@ -51,38 +51,38 @@ public class TodoController {
 
   @RequestMapping(path = "/{id}/edit", method = RequestMethod.GET)
   public String showEditForm(Model model, @PathVariable Long id) {
-    Todo todo = todoService.getInstantOrNormalTodo(id);
+    FullTodoDTO dto = todoService.getInstantOrNormalTodo(id);
     model.addAttribute("displayMode", "edit");
-    ModelLoader.addTodoAttributes(model, userService.getUsers(), settingService , todo);
+    ModelLoader.addTodoAttributes(model, userService.getUsers(), settingService , dto);
     return "todo";
   }
 
   @RequestMapping(path = "/{id}/edit", method = RequestMethod.POST)
-  public String updateTodo(@PathVariable Long id, @ModelAttribute Todo todo) {
-    todo.setId(id);
-    todoService.saveTodo(todo);
+  public String updateTodo(@PathVariable Long id, @ModelAttribute FullTodoDTO dto) {
+    dto.setId(id);
+    todoService.saveTodo(dto);
     return "redirect:/list";
   }
 
   @RequestMapping(path = "/add", method = RequestMethod.GET)
   public String showAddForm(Model model) {
-    Todo todo = todoService.createEmptyTodo();
+    FullTodoDTO dto = todoService.createEmptyTodo();
     model.addAttribute("displayMode", "add");
-    ModelLoader.addTodoAttributes(model, userService.getUsers(), settingService , todo);
+    ModelLoader.addTodoAttributes(model, userService.getUsers(), settingService , dto);
     return "todo";
   }
 
   @RequestMapping(path = "/add", method = RequestMethod.POST)
-  public String addTodo(@ModelAttribute Todo todo) {
-    todoService.saveTodo(todo);
+  public String addTodo(@ModelAttribute FullTodoDTO dto) {
+    todoService.saveTodo(dto);
     return "redirect:/list";
   }
 
   @RequestMapping(path="/add-instant", method = RequestMethod.POST)
   public String addInstantTodo(String title, Model model){
     todoService.saveInstantTodo(title);
-    Todo todo = todoService.createEmptyTodo();
-    ModelLoader.addTodoAttributes(model, userService.getUsers(), settingService , todo);
+    FullTodoDTO dto = todoService.createEmptyTodo();
+    ModelLoader.addTodoAttributes(model, userService.getUsers(), settingService , dto);
     model.addAttribute("instantTaskAdded", "ok");
     model.addAttribute("displayMode", "add");
     return "todo";
@@ -105,7 +105,6 @@ public class TodoController {
     todoService.completeTodo(id);
     return getMainPage(model,owner, project,context);
   }
-
 
   /*@Transactional
   @RequestMapping(path = "/settings/showdone", method = RequestMethod.POST)

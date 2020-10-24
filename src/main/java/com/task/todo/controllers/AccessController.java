@@ -23,6 +23,13 @@ public class AccessController {
   private UserServiceImpl userService;
   private EmailService emailService;
 
+  // TODO: Remove Todo references from all controllers
+  // TODO: Make edit todo page work well (load all data properly - especially selectors)
+  // TODO: Display all data on Todo pages
+  // TODO: Fix filtering logic - use authenticated user
+  // TODO: Add display done to filtering
+  // TODO: Add logic to manage history
+
   @Autowired
   public AccessController(RegistrationServiceImpl registrationService,
                           UserServiceImpl userService,

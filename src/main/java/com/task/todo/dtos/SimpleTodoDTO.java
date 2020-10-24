@@ -5,7 +5,7 @@ import com.task.todo.enums.Status;
 import com.task.todo.models.User;
 import java.time.LocalDate;
 
-public class DisplayTodoDTO {
+public class SimpleTodoDTO {
 
   //region Fields
   private Long id;

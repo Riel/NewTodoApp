@@ -1,6 +1,7 @@
 package com.task.todo.services;
 
-import com.task.todo.dtos.DisplayTodoDTO;
+import com.task.todo.dtos.FullTodoDTO;
+import com.task.todo.dtos.SimpleTodoDTO;
 import com.task.todo.models.Context;
 import com.task.todo.models.Project;
 import com.task.todo.utilities.DateUtilities;
@@ -11,15 +12,11 @@ import com.task.todo.models.Todo;
 import com.task.todo.models.User;
 import com.task.todo.repositories.TodoRepository;
 import com.task.todo.repositories.UserRepository;
-import com.task.todo.utilities.TodoColors;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.Query;
-import jdk.vm.ci.meta.Local;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +28,6 @@ public class TodoServiceImpl {
   private TodoRepository todoRepository;
   private QueryService queryService;
 
-
   @Autowired
   public TodoServiceImpl(UserRepository userRepository, TodoRepository todoRepository,
                          QueryService queryService) {
@@ -40,65 +36,41 @@ public class TodoServiceImpl {
     this.queryService = queryService;
   }
 
-  public List<DisplayTodoDTO> getFilteredTodos(String ownerName, String project, String context){
+  //region Collect todos
+  public List<SimpleTodoDTO> getFilteredTodos(String ownerName, String project, String context){
     Query query = queryService.buildFilterQuery(ownerName, project, context);
     List<Todo> todos = query.getResultList();
 
     return todos.stream()
-        .map(todo -> convertTodoToDisplayTodoDTO(todo))
+        .map(todo -> convertTodoToSimpleTodoDTO(todo))
         .collect(Collectors.toList());
-
-    /*List<TodoColorizer> todoViewModels = new ArrayList<>();
-    todos.stream().forEach(todo -> todoViewModels.add(new TodoColorizer(todo)));
-    return todoViewModels;*/
   }
 
+  public FullTodoDTO getTodoDto(Long id) {
+    Optional<Todo> todo = todoRepository.findById(id);
+    return todo.isPresent() ? convertTodoToFullTodoDto(todo.get()) : null;
+  }
 
-  private DisplayTodoDTO convertTodoToDisplayTodoDTO(Todo todo){
-    ModelMapper mapper = new ModelMapper();
-    DisplayTodoDTO dto = new DisplayTodoDTO();
-    LocalDate dueDate = todo.getDueDate();
-    TodoColorizer colorizer = new TodoColorizer(todo);
-    mapper.createTypeMap(Todo.class, DisplayTodoDTO.class)
-        .setPostConverter(context -> {
-      context.getDestination().setPriorityDisplayColor(colorizer.getPriorityDisplayColor());
-      context.getDestination().setDueDateDisplayColor(colorizer.getDueDateDisplayColor());
-      context.getDestination().setProjectDisplayColor(colorizer.getProjectDisplayColor());
-      context.getDestination().setContextDisplayColor(colorizer.getContextDisplayColor());
-      //context.getDestination().setCreationDisplayDate(DateUtilities.localDateToString(todo.getCreationDate()));
-      context.getDestination().setDueDisplayDate(dueDate == null ? "-" : DateUtilities.localDateToString(dueDate));
-      return context.getDestination();
-    }).map(todo, dto);
-
-    // Set colors:
-
+  public FullTodoDTO getInstantOrNormalTodo(Long id){
+    FullTodoDTO dto = getTodoDto(id);
+    if(dto.getProject()==null || "not set".equals(dto.getProject())){
+      String title = dto.getTitle();
+      dto =  createEmptyTodo();
+      dto.setTitle(title);
+      dto.setId(id);
+    }
 
     return dto;
   }
 
-  public Todo getTodo(Long id) {
-    Optional<Todo> todo = todoRepository.findById(id);
-    return todo.isPresent() ? todo.get() : null ;
-  }
-
-  public Todo getInstantOrNormalTodo(Long id){
-    Todo todo = getTodo(id);
-    if(todo.getProject()==null || "not set".equals(todo.getProject())){
-      String title = todo.getTitle();
-      todo = createEmptyTodo();
-      todo.setTitle(title);
-      todo.setId(id);
-    }
-
-    return todo;
-  }
-
-  public Todo createEmptyTodo() {
+  public FullTodoDTO createEmptyTodo() {
     Todo todo = new Todo("", "", new Project("Home"), new Context("Phone"), Priority.LOW, Status.NOT_STARTED, null, new User());
     todo.setId(0L);
-    return todo;
+    return convertTodoToFullTodoDto(todo);
   }
+  //endregion
 
+  //region Modify todos
   public void saveInstantTodo(String title){
     /*
     List<User> owners = new ArrayList();
@@ -109,8 +81,8 @@ public class TodoServiceImpl {
     saveTodo(instantTodo);*/
   }
 
-  public void saveTodo(Todo todo){
-    todoRepository.save(todo);
+  public void saveTodo(FullTodoDTO dto){
+    todoRepository.save(convertFullTodoDtoToTodo(dto));
   }
 
   public void deleteTodoById(Long id) {
@@ -118,8 +90,51 @@ public class TodoServiceImpl {
   }
 
   public void completeTodo(Long id){
-    Todo todo = getTodo(id);
+    Todo todo = getTodoById(id);
     todo.setStatus(Status.FINISHED);
-    saveTodo(todo);
+    todoRepository.save(todo);
   }
+  //endregion
+
+  private Todo getTodoById(Long id){
+    Optional<Todo> todo = todoRepository.findById(id);
+    return todo.isPresent() ? todo.get() : null;
+  }
+
+  //region Mapping to / from Dto
+  private SimpleTodoDTO convertTodoToSimpleTodoDTO(Todo todo){
+    ModelMapper mapper = new ModelMapper();
+    SimpleTodoDTO dto = new SimpleTodoDTO();
+    LocalDate dueDate = todo.getDueDate();
+    TodoColorizer colorizer = new TodoColorizer(todo);
+    mapper.createTypeMap(Todo.class, SimpleTodoDTO.class)
+        .setPostConverter(context -> {
+          context.getDestination().setPriorityDisplayColor(colorizer.getPriorityDisplayColor());
+          context.getDestination().setDueDateDisplayColor(colorizer.getDueDateDisplayColor());
+          context.getDestination().setProjectDisplayColor(colorizer.getProjectDisplayColor());
+          context.getDestination().setContextDisplayColor(colorizer.getContextDisplayColor());
+          //context.getDestination().setCreationDisplayDate(DateUtilities.localDateToString(todo.getCreationDate()));
+          context.getDestination().setDueDisplayDate(dueDate == null ? "-" : DateUtilities.localDateToString(dueDate));
+          return context.getDestination();
+        }).map(todo, dto);
+
+    // Set colors:
+
+    return dto;
+  }
+
+  private FullTodoDTO convertTodoToFullTodoDto(Todo todo){
+    ModelMapper mapper = new ModelMapper();
+    FullTodoDTO dto = new FullTodoDTO();
+    mapper.createTypeMap(Todo.class, FullTodoDTO.class).map(todo, dto);
+    return dto;
+  }
+
+  private Todo convertFullTodoDtoToTodo(FullTodoDTO dto){
+    ModelMapper mapper = new ModelMapper();
+    Todo todo = new Todo();
+    mapper.createTypeMap(FullTodoDTO.class, Todo.class).map(dto, todo);
+    return todo;
+  }
+  //endregion
 }
