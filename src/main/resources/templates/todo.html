@@ -18,7 +18,7 @@
             <td><label style="color: lightgray" class="mr-2">Task id: </label></td>
             <td><label style="color: lightgray" th:text="*{getId()}"></label></td>
         </tr>
-        <tr class="show-edit" style="display:none">
+        <tr th:unless="*{getCreator() == null }" class="show-edit" style="display:none">
             <td><label style="color: lightgray" class="mr-2">Created by: </label></td>
             <td><label style="color: lightgray" th:text="*{getCreator().getUsername()}"></label></td>
         </tr>

@@ -29,19 +29,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class TodoServiceImpl {
 
-  private UserRepository userRepository;
+  private UserServiceImpl userService;
   private TodoRepository todoRepository;
   private ProjectRepository projectRepository;
   private ContextRepository contextepository;
   private QueryService queryService;
 
   @Autowired
-  public TodoServiceImpl(UserRepository userRepository,
+  public TodoServiceImpl(UserServiceImpl userService,
                          TodoRepository todoRepository,
                          ProjectRepository projectRepository,
                          ContextRepository contextepository,
                          QueryService queryService) {
-    this.userRepository = userRepository;
+    this.userService = userService;
     this.todoRepository = todoRepository;
     this.projectRepository = projectRepository;
     this.contextepository = contextepository;
@@ -95,6 +95,12 @@ public class TodoServiceImpl {
         .now(), owners.get(0));
 
     saveTodo(instantTodo);*/
+  }
+
+  public void saveNewTodo(FullTodoDTO dto) {
+    dto.setCreationDate(LocalDate.now());
+    dto.setCreator(userService.getAuthenticatedUserWithoutProperties());
+    saveTodo(dto);
   }
 
   public void saveTodo(FullTodoDTO dto){
@@ -158,15 +164,20 @@ public class TodoServiceImpl {
     String contextName = dto.getContext();
     Project project = projectRepository.findByName(projectName).orElseThrow(() -> new ProjectDoesNotExistException(projectName));
     Context todoContext = contextepository.findByName(contextName).orElseThrow(() -> new ContextDoesNotExistException(contextName));
-    // TODO: handle error here
-    Todo origin = todoRepository.findById(dto.getId()).get();
+
 
     mapper.createTypeMap(FullTodoDTO.class, Todo.class)
         .setPostConverter(context -> {
       context.getDestination().setProject(project);
       context.getDestination().setContext(todoContext);
-      context.getDestination().setCreator(origin.getCreator());
-      context.getDestination().setCreationDate(origin.getCreationDate());
+
+      if (dto.getId() != null){
+        // TODO: handle error here
+        Todo origin = todoRepository.findById(dto.getId()).get();
+        context.getDestination().setCreator(origin.getCreator());
+        context.getDestination().setCreationDate(origin.getCreationDate());
+      }
+
       return context.getDestination();
     }).map(dto, todo);
 

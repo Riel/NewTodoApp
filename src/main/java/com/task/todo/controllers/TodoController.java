@@ -74,7 +74,7 @@ public class TodoController {
 
   @RequestMapping(path = "/add", method = RequestMethod.POST)
   public String addTodo(@ModelAttribute FullTodoDTO dto) {
-    todoService.saveTodo(dto);
+    todoService.saveNewTodo(dto);
     return "redirect:/todo/list";
   }
 

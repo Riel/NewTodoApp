@@ -22,9 +22,7 @@ public class AccessController {
   private RegistrationServiceImpl registrationService;
   private UserServiceImpl userService;
   private EmailService emailService;
-
-  // TODO: Make edit/display todo page work well (load all data properly - especially selectors)
-  // TODO: Make add new page work well
+  
   // TODO: Fix filtering logic - use authenticated user
   // TODO: Add display done to filtering
   // TODO: Add logic to manage history
