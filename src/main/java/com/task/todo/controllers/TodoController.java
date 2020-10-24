@@ -66,7 +66,7 @@ public class TodoController {
 
   @RequestMapping(path = "/add", method = RequestMethod.GET)
   public String showAddForm(Model model) {
-    FullTodoDTO dto = todoService.createEmptyTodo();
+    FullTodoDTO dto = todoService.createInstantTodoDto();
     model.addAttribute("displayMode", "add");
     ModelLoader.addTodoAttributes(model, userService.getUsers(), settingService , dto);
     return "todo";
@@ -81,7 +81,7 @@ public class TodoController {
   @RequestMapping(path="/add-instant", method = RequestMethod.POST)
   public String addInstantTodo(String title, Model model){
     todoService.saveInstantTodo(title);
-    FullTodoDTO dto = todoService.createEmptyTodo();
+    FullTodoDTO dto = todoService.createInstantTodoDto();
     ModelLoader.addTodoAttributes(model, userService.getUsers(), settingService , dto);
     model.addAttribute("instantTaskAdded", "ok");
     model.addAttribute("displayMode", "add");

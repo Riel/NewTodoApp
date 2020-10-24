@@ -25,7 +25,6 @@ public class AccessController {
   
   // TODO: Fix filtering logic - use authenticated user
   // TODO: Add display done to filtering
-  // TODO: Add logic to manage history
   // TODO: display completition date if completed
 
   @Autowired

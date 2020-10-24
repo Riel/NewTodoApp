@@ -70,7 +70,7 @@ public class TodoServiceImpl {
     FullTodoDTO dto = getTodoDto(id);
     if(dto.getProject()==null || "not set".equals(dto.getProject())){
       String title = dto.getTitle();
-      dto =  createEmptyTodo();
+      dto =  createInstantTodoDto();
       dto.setTitle(title);
       dto.setId(id);
     }
@@ -78,8 +78,8 @@ public class TodoServiceImpl {
     return dto;
   }
 
-  public FullTodoDTO createEmptyTodo() {
-    Todo todo = new Todo("", "", new Project("Home"), new Context("Phone"), Priority.LOW, Status.NOT_STARTED, null, new User());
+  public FullTodoDTO createInstantTodoDto() {
+    Todo todo = createInstantTodo();
     todo.setId(0L);
     return convertTodoToFullTodoDto(todo);
   }
@@ -87,10 +87,14 @@ public class TodoServiceImpl {
 
   //region Modify todos
   public void saveInstantTodo(String title){
-    Todo instantTodo = new Todo(title, "", null, null,
-        Priority.MUST, Status.NOT_STARTED, LocalDate.now(),
-        userService.getAuthenticatedUserWithoutProperties());
+    Todo instantTodo = createInstantTodo();
+    instantTodo.setTitle(title);
     todoRepository.save(instantTodo);
+  }
+
+  private Todo createInstantTodo() {
+    return new Todo("", "", null, null, Priority.MUST, Status.NOT_STARTED, null,
+        userService.getAuthenticatedUserWithoutProperties());
   }
 
   public void saveNewTodo(FullTodoDTO dto) {
