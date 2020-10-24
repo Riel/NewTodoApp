@@ -24,9 +24,11 @@ public class AccessController {
   private EmailService emailService;
 
   // TODO: Make edit/display todo page work well (load all data properly - especially selectors)
+  // TODO: Make add new page work well
   // TODO: Fix filtering logic - use authenticated user
   // TODO: Add display done to filtering
   // TODO: Add logic to manage history
+  // TODO: display completition date if completed
 
   @Autowired
   public AccessController(RegistrationServiceImpl registrationService,

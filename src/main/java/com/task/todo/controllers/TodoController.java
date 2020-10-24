@@ -61,7 +61,7 @@ public class TodoController {
   public String updateTodo(@PathVariable Long id, @ModelAttribute FullTodoDTO dto) {
     dto.setId(id);
     todoService.saveTodo(dto);
-    return "redirect:/list";
+    return "redirect:/todo/list";
   }
 
   @RequestMapping(path = "/add", method = RequestMethod.GET)
@@ -75,7 +75,7 @@ public class TodoController {
   @RequestMapping(path = "/add", method = RequestMethod.POST)
   public String addTodo(@ModelAttribute FullTodoDTO dto) {
     todoService.saveTodo(dto);
-    return "redirect:/list";
+    return "redirect:/todo/list";
   }
 
   @RequestMapping(path="/add-instant", method = RequestMethod.POST)

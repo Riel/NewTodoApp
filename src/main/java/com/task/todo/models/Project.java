@@ -14,7 +14,7 @@ public class Project {
   //region Fields
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   @ManyToOne
   private Setting setting;

@@ -19,6 +19,10 @@
             <td><label style="color: lightgray" th:text="*{getId()}"></label></td>
         </tr>
         <tr class="show-edit" style="display:none">
+            <td><label style="color: lightgray" class="mr-2">Created by: </label></td>
+            <td><label style="color: lightgray" th:text="*{getCreator().getUsername()}"></label></td>
+        </tr>
+        <tr class="show-edit" style="display:none">
             <td><label style="color: lightgray" class="mr-2">Created at: </label></td>
             <td><label style="color: lightgray" th:text="*{getCreationDate()}"></label></td>
         </tr>
@@ -47,10 +51,10 @@
             <td><input placeholder="... add link" type="text" id="link" th:field="*{link}"></td>
         </tr>
         <tr>
-            <td><label class="mr-2" style="color: lightgray" >Owner: </label></td>
+            <td><label class="mr-2" style="color: lightgray" >Assignee: </label></td>
             <!-- th:field does not work with select:
              https://www.baeldung.com/thymeleaf-select-option -->
-            <td><select name=owner required>
+            <td><select name="assignee" required>
                 <option value="" selected disabled hidden>Select an option</option>
                 <option th:each="owner : ${owners}"
                         th:text="${owner.getUsername()}"
@@ -89,7 +93,7 @@
         </tr>
         <tr>
             <td><label class="mr-2" style="color: lightgray" >Priority: </label></td>
-            <td><select name="prio" required>
+            <td><select name="priority" required>
                 <option value="" selected disabled hidden>Select an option</option>
                 <option th:unless="(${displayMode}=='edit' and ${todo.getProject()}=='') or ${displayMode}=='add'"
                         th:each="priority : ${priorities}"
@@ -119,12 +123,20 @@
                 </option>
             </select></td>
         </tr>
+        <tr>
+            <td><label class="mr-2" style="color: lightgray" >Public: </label></td>
+            <td><input type="checkbox"
+                   name="public"
+                   th:checked="*{isPublic}"
+                   th:field="*{isPublic}">
+            </td>
+        </tr>
         </tbody>
     </table>
 
     <div>
         <input id="add-todo" class="col-lg-1 btn btn-warning mt-3" style="margin-right: 20px" type="submit" value="Save">
-        <a class="col-lg-1 btn btn-warning mt-3" style="background-color: gray; border-color: gray; text-decoration: none; color: white" th:href="'/'">Cancel</a>
+        <a class="col-lg-1 btn btn-warning mt-3" style="background-color: gray; border-color: gray; text-decoration: none; color: white" th:href="'/todo/list'">Cancel</a>
     </div>
 
     <div th:insert="fragments/frg_add_instant_dialog :: add_instant_dialog"></div>

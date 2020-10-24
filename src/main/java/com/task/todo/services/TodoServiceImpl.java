@@ -2,17 +2,21 @@ package com.task.todo.services;
 
 import com.task.todo.dtos.FullTodoDTO;
 import com.task.todo.dtos.SimpleTodoDTO;
+import com.task.todo.enums.Priority;
+import com.task.todo.enums.Status;
+import com.task.todo.exceptions.ContextDoesNotExistException;
+import com.task.todo.exceptions.ProjectDoesNotExistException;
 import com.task.todo.exceptions.TodoDoesNotExistException;
 import com.task.todo.models.Context;
 import com.task.todo.models.Project;
-import com.task.todo.utilities.DateUtilities;
-import com.task.todo.utilities.TodoColorizer;
-import com.task.todo.enums.Priority;
-import com.task.todo.enums.Status;
 import com.task.todo.models.Todo;
 import com.task.todo.models.User;
+import com.task.todo.repositories.ContextRepository;
+import com.task.todo.repositories.ProjectRepository;
 import com.task.todo.repositories.TodoRepository;
 import com.task.todo.repositories.UserRepository;
+import com.task.todo.utilities.DateUtilities;
+import com.task.todo.utilities.TodoColorizer;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -27,13 +31,20 @@ public class TodoServiceImpl {
 
   private UserRepository userRepository;
   private TodoRepository todoRepository;
+  private ProjectRepository projectRepository;
+  private ContextRepository contextepository;
   private QueryService queryService;
 
   @Autowired
-  public TodoServiceImpl(UserRepository userRepository, TodoRepository todoRepository,
+  public TodoServiceImpl(UserRepository userRepository,
+                         TodoRepository todoRepository,
+                         ProjectRepository projectRepository,
+                         ContextRepository contextepository,
                          QueryService queryService) {
     this.userRepository = userRepository;
     this.todoRepository = todoRepository;
+    this.projectRepository = projectRepository;
+    this.contextepository = contextepository;
     this.queryService = queryService;
   }
 
@@ -131,14 +142,34 @@ public class TodoServiceImpl {
   private FullTodoDTO convertTodoToFullTodoDto(Todo todo){
     ModelMapper mapper = new ModelMapper();
     FullTodoDTO dto = new FullTodoDTO();
-    mapper.createTypeMap(Todo.class, FullTodoDTO.class).map(todo, dto);
+    mapper.createTypeMap(Todo.class, FullTodoDTO.class)
+        .setPostConverter(context -> {
+          context.getDestination().setProject(todo.getProject().getName());
+          context.getDestination().setContext(todo.getContext().getName());
+          return context.getDestination();
+        }).map(todo, dto);
     return dto;
   }
 
   private Todo convertFullTodoDtoToTodo(FullTodoDTO dto){
     ModelMapper mapper = new ModelMapper();
     Todo todo = new Todo();
-    mapper.createTypeMap(FullTodoDTO.class, Todo.class).map(dto, todo);
+    String projectName = dto.getProject();
+    String contextName = dto.getContext();
+    Project project = projectRepository.findByName(projectName).orElseThrow(() -> new ProjectDoesNotExistException(projectName));
+    Context todoContext = contextepository.findByName(contextName).orElseThrow(() -> new ContextDoesNotExistException(contextName));
+    // TODO: handle error here
+    Todo origin = todoRepository.findById(dto.getId()).get();
+
+    mapper.createTypeMap(FullTodoDTO.class, Todo.class)
+        .setPostConverter(context -> {
+      context.getDestination().setProject(project);
+      context.getDestination().setContext(todoContext);
+      context.getDestination().setCreator(origin.getCreator());
+      context.getDestination().setCreationDate(origin.getCreationDate());
+      return context.getDestination();
+    }).map(dto, todo);
+
     return todo;
   }
   //endregion

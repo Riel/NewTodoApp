@@ -3,6 +3,7 @@ package com.task.todo.models;
 import com.task.todo.enums.Priority;
 import com.task.todo.enums.Status;
 import java.time.LocalDate;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,10 +25,10 @@ public class Todo implements Comparable<Todo> {
   private String description;
   private String link;
 
-  @ManyToOne
+  @ManyToOne (cascade = CascadeType.PERSIST)
   private Project project;
 
-  @ManyToOne
+  @ManyToOne (cascade = CascadeType.PERSIST)
   private Context context;
 
   private Priority priority;
@@ -44,10 +45,10 @@ public class Todo implements Comparable<Todo> {
 
   private LocalDate completionDate;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private User creator;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private User assignee;
   //endregion
 
@@ -126,11 +127,11 @@ public class Todo implements Comparable<Todo> {
     isDeleted = deleted;
   }
 
-  public boolean isPublic() {
+  public boolean getIsPublic() {
     return isPublic;
   }
 
-  public void setPublic(boolean aPublic) {
+  public void setIsPublic(boolean aPublic) {
     isPublic = aPublic;
   }
 
