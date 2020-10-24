@@ -2,6 +2,7 @@ package com.task.todo.services;
 
 import com.task.todo.dtos.FullTodoDTO;
 import com.task.todo.dtos.SimpleTodoDTO;
+import com.task.todo.exceptions.TodoDoesNotExistException;
 import com.task.todo.models.Context;
 import com.task.todo.models.Project;
 import com.task.todo.utilities.DateUtilities;
@@ -48,7 +49,11 @@ public class TodoServiceImpl {
 
   public FullTodoDTO getTodoDto(Long id) {
     Optional<Todo> todo = todoRepository.findById(id);
-    return todo.isPresent() ? convertTodoToFullTodoDto(todo.get()) : null;
+    if (todo.isPresent()){
+      return convertTodoToFullTodoDto(todo.get());
+    } else {
+      throw new TodoDoesNotExistException(id);
+    }
   }
 
   public FullTodoDTO getInstantOrNormalTodo(Long id){
@@ -98,7 +103,7 @@ public class TodoServiceImpl {
 
   private Todo getTodoById(Long id){
     Optional<Todo> todo = todoRepository.findById(id);
-    return todo.isPresent() ? todo.get() : null;
+    return todo.orElseThrow(() -> new TodoDoesNotExistException(id));
   }
 
   //region Mapping to / from Dto

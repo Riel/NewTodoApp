@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler
+  public String handleUserDoesNotExistException(TodoDoesNotExistException e) {
+    //Todo does not exist with given id/name : e.getMessage()
+    return "";
+  }
+
+  @ExceptionHandler
   public String handleAuthenticationException(PrincipalIsNotTodoUserDetailsException e) {
     //Principal is not instance of AtriumUserDetails.
     return "";

@@ -35,7 +35,7 @@ public class UserServiceImpl {
   public User getAuthenticatedUserWithoutProperties() {
     long authenticatedUserId = getAuthenticatedUserId();
     Optional<User> optionalUser = userRepository.findById(authenticatedUserId);
-    return optionalUser.orElseThrow(() -> new UserDoesNotExistException(Long.toString(authenticatedUserId)));
+    return optionalUser.orElseThrow(() -> new UserDoesNotExistException(authenticatedUserId));
   }
 
   private long getAuthenticatedUserId() {

@@ -1,11 +1,11 @@
 package com.task.todo.exceptions;
 
-public class UserDoesNotExistException extends RuntimeException {
+public class TodoDoesNotExistException extends RuntimeException {
 
   private String message;
 
-  public UserDoesNotExistException(Long id) {
-    this.message = "User does not exist with id: " + id;
+  public TodoDoesNotExistException(Long id) {
+    this.message = "Todo does not exist with id: " + id;
   }
 
   @Override
