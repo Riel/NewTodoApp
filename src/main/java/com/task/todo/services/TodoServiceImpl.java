@@ -109,7 +109,9 @@ public class TodoServiceImpl {
   }
 
   public void deleteTodoById(Long id) {
-    todoRepository.deleteById(id);
+    Todo todo = todoRepository.findById(id).orElseThrow(() -> new TodoDoesNotExistException(id));
+    todo.setDeleted(true);
+    todoRepository.save(todo);
   }
 
   public void completeTodo(Long id){
