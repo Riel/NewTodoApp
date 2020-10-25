@@ -30,21 +30,21 @@ public class TodoController {
 
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   public String getMainPage(Model model,
-                            @RequestParam (required = false) String owner,
-                            @RequestParam (required = false) String project,
-                            @RequestParam (required = false) String context){
+                            @RequestParam (required = false) String ownerName,
+                            @RequestParam (required = false) String projectName,
+                            @RequestParam (required = false) String contextName){
 
-    List<SimpleTodoDTO> todoViewModels = todoService.getFilteredTodos(owner, project, context);
+    List<SimpleTodoDTO> filteredTodos = todoService.getFilteredTodos(ownerName, projectName, contextName);
 
-    model.addAttribute("todos", todoViewModels);
+    model.addAttribute("todos", filteredTodos);
     model.addAttribute("owners", userService.getUserNames());
     model.addAttribute("projects", settingService.getProjectNames());
     model.addAttribute("contexts", settingService.getContextNames());
 
-    model.addAttribute("selectedOwner", owner);
-    model.addAttribute("selectedProject", project);
-    model.addAttribute("selectedContext", context);
-    model.addAttribute("items", todoViewModels.size());
+    model.addAttribute("selectedOwner", ownerName);
+    model.addAttribute("selectedProject", projectName);
+    model.addAttribute("selectedContext", contextName);
+    model.addAttribute("items", filteredTodos.size());
 
     return "main";
   }

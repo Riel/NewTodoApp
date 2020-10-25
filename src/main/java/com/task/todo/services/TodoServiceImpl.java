@@ -31,25 +31,25 @@ public class TodoServiceImpl {
   private UserServiceImpl userService;
   private TodoRepository todoRepository;
   private ProjectRepository projectRepository;
-  private ContextRepository contextepository;
+  private ContextRepository contextRepository;
   private QueryService queryService;
 
   @Autowired
   public TodoServiceImpl(UserServiceImpl userService,
                          TodoRepository todoRepository,
                          ProjectRepository projectRepository,
-                         ContextRepository contextepository,
+                         ContextRepository contextRepository,
                          QueryService queryService) {
     this.userService = userService;
     this.todoRepository = todoRepository;
     this.projectRepository = projectRepository;
-    this.contextepository = contextepository;
+    this.contextRepository = contextRepository;
     this.queryService = queryService;
   }
 
   //region Collect todos
-  public List<SimpleTodoDTO> getFilteredTodos(String ownerName, String project, String context){
-    Query query = queryService.buildFilterQuery(ownerName, project, context);
+  public List<SimpleTodoDTO> getFilteredTodos(String ownerName, String projectName, String contextName){
+    Query query = queryService.buildFilterQuery(ownerName, projectName, contextName);
     List<Todo> todos = query.getResultList();
 
     return todos.stream()
@@ -166,7 +166,7 @@ public class TodoServiceImpl {
     String projectName = dto.getProject();
     String contextName = dto.getContext();
     Project project = projectRepository.findByName(projectName).orElseThrow(() -> new ProjectDoesNotExistException(projectName));
-    Context todoContext = contextepository.findByName(contextName).orElseThrow(() -> new ContextDoesNotExistException(contextName));
+    Context todoContext = contextRepository.findByName(contextName).orElseThrow(() -> new ContextDoesNotExistException(contextName));
 
 
     mapper.createTypeMap(FullTodoDTO.class, Todo.class)

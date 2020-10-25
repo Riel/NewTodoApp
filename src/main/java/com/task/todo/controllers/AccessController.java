@@ -23,8 +23,7 @@ public class AccessController {
   private UserServiceImpl userService;
   private EmailService emailService;
 
-  // TODO: Fix filtering logic - use authenticated user
-  
+  // TODO: Check deletion logic
   // TODO: Add display done to filtering
   // TODO: display completition date if completed
 

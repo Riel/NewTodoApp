@@ -29,7 +29,9 @@ public class UserServiceImpl {
   }
 
   public List<String> getUserNames() {
-    return userRepository.findAllUsername();
+    List<String> userNames = userRepository.findAllUsername();
+    userNames.add(queryService.getAllFilter());
+    return userNames;
   }
 
   public User getAuthenticatedUserWithoutProperties() {

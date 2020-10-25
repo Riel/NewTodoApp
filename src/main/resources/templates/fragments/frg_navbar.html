@@ -5,7 +5,7 @@
 <div th:fragment="nav_bar_with_search_form">
     <nav class="navbar navbar-expand-md fixed-top bg-dark">
         <form name="searchForm" action="/todo/list" th:method="get" style="vertical-align: bottom">
-            <select name="owner" id="owner" onchange="document.forms['searchForm'].submit();" style="display: inline">
+            <select name="ownerName" id="owner" onchange="document.forms['searchForm'].submit();" style="display: inline">
                 <option value="0" selected disabled hidden>Select owner</option>
                 <option th:each="owner : ${owners}"
                         th:text="${owner}"
@@ -13,7 +13,7 @@
                         th:selected="${owner.equals(selectedOwner)}">
                 </option>
             </select>
-            <select name=project id="project" onchange="document.forms['searchForm'].submit();" style="display: inline">
+            <select name=projectName id="project" onchange="document.forms['searchForm'].submit();" style="display: inline">
                 <option value="0" selected disabled hidden>Select project</option>
                 <option th:each="project : ${projects}"
                         th:text="${project}"
@@ -21,7 +21,7 @@
                         th:selected="${project.equals(selectedProject)}">
                 </option>
             </select>
-            <select name=context id="context" onchange="document.forms['searchForm'].submit();" style="display: inline">
+            <select name=contextName id="context" onchange="document.forms['searchForm'].submit();" style="display: inline">
                 <option value="0" selected disabled hidden>Select context</option>
                 <option th:each="context : ${contexts}"
                         th:text="${context}"

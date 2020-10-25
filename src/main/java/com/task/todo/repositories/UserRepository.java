@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Long> {
   void deleteUserByUsername(String username);
   Optional<User> findFirstByUsername(String username);
+
   Optional<User> findFirstByEmail(String username);
 
   @Query(value = "SELECT u.username FROM User u")

@@ -8,6 +8,10 @@ public class UserDoesNotExistException extends RuntimeException {
     this.message = "User does not exist with id: " + id;
   }
 
+  public UserDoesNotExistException(String name) {
+    this.message = "User does not exist with name: " + name;
+  }
+
   @Override
   public String getMessage() {
     return message;
