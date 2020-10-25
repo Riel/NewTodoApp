@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RegistrationServiceImpl implements RegistrationService {
+public class RegistrationServiceImpl {
 
   //region Fields
   private UserRepository userRepository;
@@ -35,7 +35,6 @@ public class RegistrationServiceImpl implements RegistrationService {
   }
 
   //region Methods
-  @Override
   public List<String> getRegistrationError(RegistrationDTO registrationDTO) {
     List<String> errors = new ArrayList<>();
     if (!isPasswordValid(registrationDTO.getPassword())) {
@@ -53,7 +52,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     return errors;
   }
 
-  @Override
   public boolean isRegistrationValid(RegistrationDTO registrationDTO) {
     return isPasswordValid(registrationDTO.getPassword())
         && isEmailValid(registrationDTO.getEmail())
@@ -61,7 +59,6 @@ public class RegistrationServiceImpl implements RegistrationService {
         && isEmailUnique(registrationDTO.getEmail());
   }
 
-  @Override
   public User register(RegistrationDTO registrationDTO) {
     User newUser = new User(registrationDTO.getUsername(), registrationDTO.getEmail(),
         encoder.encode(registrationDTO.getPassword()), "USER");
@@ -69,19 +66,16 @@ public class RegistrationServiceImpl implements RegistrationService {
     return userRepository.save(newUser);
   }
 
-  @Override
   public void createVerificationTokenForUser(User newUser) {
     newUser.setVerificationToken(new VerificationToken());
     newUser.getVerificationToken().setUser(newUser);
   }
 
-  @Override
   public void updateVerificationTokenForUser(User user, VerificationToken oldToken) {
     createVerificationTokenForUser(user);
     user.getVerificationToken().setId(oldToken.getId());
   }
 
-  @Override
   public void verifyUser(User user) {
     if (user.isVerified()) {
       throw new UserHasAlreadyVerifiedException(user.getUsername());
@@ -90,13 +84,11 @@ public class RegistrationServiceImpl implements RegistrationService {
     userRepository.save(user);
   }
 
-  @Override
   public VerificationToken getVerificationToken(String token) {
     Optional<VerificationToken> optionalVerificationToken = verificationTokenRepository.findByToken(token);
     return optionalVerificationToken.orElseThrow(() -> new VerificationTokenDoesNotExistException(token));
   }
 
-  @Override
   public boolean checkVerificationTokenExpired(VerificationToken verificationToken) {
     return LocalDateTime.now().isBefore(verificationToken.getExpiryDate());
   }

@@ -49,14 +49,6 @@ public class Setting {
   public List<Project> getProjects() {
     return projects;
   }
-
-  public void setContexts(List<Context> contexts) {
-    this.contexts = contexts;
-  }
-
-  public void setProjects(List<Project> projects) {
-    this.projects = projects;
-  }
   //endregion
 
 
