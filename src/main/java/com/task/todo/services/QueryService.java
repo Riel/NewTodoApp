@@ -11,7 +11,6 @@ import com.task.todo.models.User;
 import com.task.todo.repositories.ContextRepository;
 import com.task.todo.repositories.ProjectRepository;
 import com.task.todo.repositories.UserRepository;
-import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -30,7 +29,6 @@ public class QueryService {
 
 
   private final String ALL_FILTER = "Select all";
-  private final String NOT_SET = "not set";
   private final String EMPTY_FILTER = "0";
 
   // TODO: remove this
@@ -47,41 +45,46 @@ public class QueryService {
     this.contextRepository = contextRepository;
   }
 
-  public Query buildFilterQuery(String assigneeName, String projectName, String contextName){
+  public Query buildFilterQuery(String assigneeName, String projectName, String contextName) {
     Integer assigneeId = getAssigneeId(assigneeName);
     Integer projectId = getProjectId(projectName);
     Integer contextId = getContextId(contextName);
+    StringBuilder builder = new StringBuilder();
 
-    String queryString = "SELECT * FROM todos";
-    boolean hasFilter = false;
+    builder.append("SELECT * FROM todos");
+    boolean hasPreviousFilter = false;
 
     if (assigneeId != null) {
-      queryString = queryString + " WHERE " + getFilterString("assignee_id", assigneeId);
-      hasFilter = true;
+      builder.append(" WHERE assignee_id = " + assigneeId);
+      hasPreviousFilter = true;
     }
 
-    if (projectId != null){
-      queryString = queryString + (hasFilter ? " AND " : " WHERE ") + getFilterString("project_id", projectId);
-      hasFilter = true;
+    if (projectId != null) {
+      builder.append(hasPreviousFilter ? " AND " : " WHERE ");
+      builder.append(contextId != null ? "(" : "");
+      builder.append("(project_id = " + projectId);
+      builder.append(contextId == null ? " OR is_instant = true)" : "");
+      hasPreviousFilter = true;
     }
 
-    if (contextId != null){
-      queryString = queryString + (hasFilter ? " AND " : " WHERE ") + getFilterString("context_id", contextId);
-      hasFilter = true;
+    if (contextId != null) {
+      builder.append(hasPreviousFilter ? " AND " : " WHERE ");
+      builder.append(projectId != null ? "" : " (");
+      builder.append("context_id = " + contextId);
+      builder.append(projectId != null ? ")" : "");
+      builder.append(" OR is_instant = true)");
+      hasPreviousFilter = true;
     }
 
-    //if (!getSettingById(1L).isShowDone()){
-      queryString = queryString + (hasFilter ? " AND " : " WHERE ") + "status <> " + Status.FINISHED.ordinal() ;
-    //}
+    builder.append((hasPreviousFilter ? " AND " : " WHERE ") + "status <> " + Status.FINISHED.ordinal());
 
-    queryString = queryString + getOrderString();
-
-    return entityManager.createNativeQuery(queryString , Todo.class);
+    String query = builder.append(getOrderString()).toString();
+    return entityManager.createNativeQuery(query, Todo.class);
   }
 
   private Integer getContextId(String contextName) {
     Integer contextId = null;
-    if(needsToFilterFor(contextName)) {
+    if (needsToFilterFor(contextName)) {
       Context context = contextRepository.findByName(contextName)
           .orElseThrow(() -> new ContextDoesNotExistException(contextName));
       contextId = context.getId();
@@ -91,7 +94,7 @@ public class QueryService {
 
   private Integer getProjectId(String projectName) {
     Integer projectId = null;
-    if(needsToFilterFor(projectName)){
+    if (needsToFilterFor(projectName)) {
       Project project = projectRepository.findByName(projectName)
           .orElseThrow(() -> new ProjectDoesNotExistException(projectName));
       projectId = project.getId();
@@ -101,31 +104,28 @@ public class QueryService {
 
   private Integer getAssigneeId(String assigneeName) {
     Integer assigneeId = null;
-    if(needsToFilterFor(assigneeName)){
+    if (needsToFilterFor(assigneeName)) {
       User assignee = userRepository.findFirstByUsername(assigneeName)
           .orElseThrow(() -> new UserDoesNotExistException(assigneeName));
-      assigneeId = (int)assignee.getId();
+      assigneeId = (int) assignee.getId();
     }
     return assigneeId;
-  }
-
-  private String getFilterString(String field, Integer match){
-    return field + " in ( '" + match + "', '" + NOT_SET + "') ";
   }
 
   private boolean needsToFilterFor(String parameter) {
     return parameter != null && !anyFilterEquals(parameter);
   }
 
-  private boolean anyFilterEquals(String parameter){
-    return NULL_FILTER.equals(parameter) || EMPTY_FILTER.equals(parameter) || ALL_FILTER.equals(parameter);
+  private boolean anyFilterEquals(String parameter) {
+    return NULL_FILTER.equals(parameter) || EMPTY_FILTER.equals(parameter) ||
+        ALL_FILTER.equals(parameter);
   }
 
   public String getAllFilter() {
     return ALL_FILTER;
   }
 
-  private String getOrderString(){
+  private String getOrderString() {
     return " ORDER BY CASE WHEN due_date IS NULL THEN 1 ELSE 0 END, due_date, priority;";
   }
 }

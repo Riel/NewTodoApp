@@ -23,7 +23,6 @@ public class AccessController {
   private UserServiceImpl userService;
   private EmailService emailService;
 
-  // TODO: Make instant tasks constantly visible
   // TODO: Add display done to filtering
   // TODO: display completition date if completed
 
