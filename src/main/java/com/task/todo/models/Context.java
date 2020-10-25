@@ -1,6 +1,7 @@
 package com.task.todo.models;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +17,7 @@ public class Context {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne (fetch = FetchType.LAZY)
   private Setting setting;
 
   private String name;
@@ -37,6 +38,10 @@ public class Context {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public void setSetting(Setting setting) {
+    this.setting = setting;
   }
 
   @Override

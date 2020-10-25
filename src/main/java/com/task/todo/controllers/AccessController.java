@@ -22,9 +22,9 @@ public class AccessController {
   private RegistrationServiceImpl registrationService;
   private UserServiceImpl userService;
   private EmailService emailService;
-  
-  // TODO: Fix filtering logic - use authenticated user
+
   // TODO: Make settings page work
+  // TODO: Fix filtering logic - use authenticated user
   // TODO: Add display done to filtering
   // TODO: display completition date if completed
 

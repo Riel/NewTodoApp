@@ -3,6 +3,7 @@ package com.task.todo.models;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,12 +21,17 @@ public class Setting {
   private Long id;
 
   @OneToMany (cascade = CascadeType.ALL, mappedBy = "setting")
-  private List<Context> contexts = new ArrayList<>();
+  private List<Context> contexts;
 
   @OneToMany (cascade = CascadeType.ALL, mappedBy = "setting")
-  private List<Project> projects = new ArrayList<>();
-  // private boolean showDone;
+  private List<Project> projects;
   //endregion
+
+
+  public Setting() {
+    contexts = new ArrayList<>();
+    projects = new ArrayList<>();
+  }
 
   //region Getters & Setters
   public Long getId() {
@@ -36,14 +42,6 @@ public class Setting {
     this.id = id;
   }
 
-  /*public boolean isShowDone() {
-    return showDone;
-  }
-
-  public void setShowDone(boolean showDone) {
-    this.showDone = showDone;
-  }*/
-
   public List<Context> getContexts() {
     return contexts;
   }
@@ -51,14 +49,24 @@ public class Setting {
   public List<Project> getProjects() {
     return projects;
   }
+
+  public void setContexts(List<Context> contexts) {
+    this.contexts = contexts;
+  }
+
+  public void setProjects(List<Project> projects) {
+    this.projects = projects;
+  }
   //endregion
 
-  // TODO: might need to be replaced with a setter if not used
+
   public void addContext(Context context) {
     contexts.add(context);
+    context.setSetting(this);
   }
 
   public void addProject(Project project) {
     projects.add(project);
+    project.setSetting(this);
   }
 }

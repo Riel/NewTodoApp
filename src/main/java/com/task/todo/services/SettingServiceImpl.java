@@ -2,6 +2,8 @@ package com.task.todo.services;
 
 import com.task.todo.enums.Priority;
 import com.task.todo.enums.Status;
+import com.task.todo.exceptions.ContextDoesNotExistException;
+import com.task.todo.exceptions.ProjectDoesNotExistException;
 import com.task.todo.models.Context;
 import com.task.todo.models.Project;
 import com.task.todo.models.Setting;
@@ -62,12 +64,24 @@ public class SettingServiceImpl {
 
   public void addProjectToSetting(String projectName){
     Setting setting = getSetting();
+
+    if (setting.getProjects().stream().filter(p -> p.getName().equals(projectName)).findFirst().isPresent()) {
+      // TODO: send message here
+      return;
+    }
+
     setting.addProject(new Project(projectName.trim()));
     saveSetting(setting);
   }
 
   public void addContextToSetting(String contextName){
     Setting setting = getSetting();
+
+    if (setting.getContexts().stream().filter(c -> c.getName().equals(contextName)).findFirst().isPresent()) {
+      // TODO: send message here
+      return;
+    }
+
     setting.addContext(new Context(contextName.trim()));
     saveSetting(setting);
   }
@@ -79,13 +93,23 @@ public class SettingServiceImpl {
 
   public void deleteProject(String projectName) {
     Setting setting = getSetting();
-    setting.getProjects().remove(projectName);
+    Project project = setting.getProjects().stream()
+        .filter(p -> p.getName().equals(projectName))
+        .findFirst()
+        .orElseThrow(() -> new ProjectDoesNotExistException(projectName));
+    project.setSetting(null);
+    setting.getProjects().remove(project);
     saveSetting(setting);
   }
 
   public void deleteContext(String contextName) {
     Setting setting = getSetting();
-    setting.getContexts().remove(contextName);
+    Context context = setting.getContexts().stream()
+        .filter(c -> c.getName().equals(contextName))
+        .findFirst()
+        .orElseThrow(() -> new ContextDoesNotExistException(contextName));
+    context.setSetting(null);
+    setting.getContexts().remove(context);
     saveSetting(setting);
   }
 
