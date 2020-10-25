@@ -91,7 +91,7 @@ public class TodoApplication implements CommandLineRunner {
         }
 
         LocalDate due = LocalDate.now();
-        Todo t = new Todo(name, desc, new Project(project), new Context(context), prio, stat, due, o);
+        Todo t = new Todo(name, desc, new Project(project), new Context(context), prio, stat, due, o, o);
         o.addTodo(t);
       }
     }

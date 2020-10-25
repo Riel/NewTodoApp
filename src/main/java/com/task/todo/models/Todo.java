@@ -35,6 +35,7 @@ public class Todo implements Comparable<Todo> {
   private Status status;
   private boolean isDeleted;
   private boolean isPublic;
+  private boolean isInstant;
   private String history;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -57,7 +58,7 @@ public class Todo implements Comparable<Todo> {
     creationDate = LocalDate.now();
   }
 
-  public Todo(String title, String description, Project project, Context context, Priority priority, Status status, LocalDate dueDate, User assignee) {
+  public Todo(String title, String description, Project project, Context context, Priority priority, Status status, LocalDate dueDate, User creator, User assignee) {
     this();
     this.title = title;
     this.description = description;
@@ -66,7 +67,9 @@ public class Todo implements Comparable<Todo> {
     this.dueDate = dueDate;
     this.priority = priority;
     this.status = status;
+    this.creator = creator;
     this.assignee = assignee;
+    isInstant = true;
   }
 
 
@@ -133,6 +136,14 @@ public class Todo implements Comparable<Todo> {
 
   public void setIsPublic(boolean aPublic) {
     isPublic = aPublic;
+  }
+
+  public boolean getIsInstant() {
+    return isInstant;
+  }
+
+  public void setIsInstant(boolean instant) {
+    isInstant = instant;
   }
 
   public String getHistory() {

@@ -68,7 +68,7 @@ public class TodoServiceImpl {
 
   public FullTodoDTO getInstantOrNormalTodo(Long id){
     FullTodoDTO dto = getTodoDto(id);
-    if(dto.getProject()==null || "not set".equals(dto.getProject())){
+    if(dto.getIsInstant()){
       String title = dto.getTitle();
       dto =  createInstantTodoDto();
       dto.setTitle(title);
@@ -93,8 +93,9 @@ public class TodoServiceImpl {
   }
 
   private Todo createInstantTodo() {
+    User loggedInUser = userService.getAuthenticatedUserWithoutProperties();
     return new Todo("", "", null, null, Priority.MUST, Status.NOT_STARTED, null,
-        userService.getAuthenticatedUserWithoutProperties());
+        loggedInUser, loggedInUser);
   }
 
   public void saveNewTodo(FullTodoDTO dto) {

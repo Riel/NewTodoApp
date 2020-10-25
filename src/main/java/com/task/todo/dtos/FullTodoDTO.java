@@ -21,6 +21,7 @@ public class FullTodoDTO {
 
   private boolean isDeleted;
   private boolean isPublic;
+  private boolean isInstant;
   private String history;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -113,6 +114,14 @@ public class FullTodoDTO {
 
   public void setIsPublic(boolean aPublic) {
     isPublic = aPublic;
+  }
+
+  public boolean getIsInstant() {
+    return isInstant;
+  }
+
+  public void setIsInstant(boolean instant) {
+    isInstant = instant;
   }
 
   public String getHistory() {
