@@ -1,13 +1,13 @@
 -- settings
-INSERT INTO settings (id) VALUES (1);
+INSERT INTO application_settings (id) VALUES (1);
 
 -- projects
-INSERT INTO projects (id, name, setting_id) VALUES (1, 'GFA', 1);
-INSERT INTO projects (id, name, setting_id) VALUES (2, 'Home', 1);
+INSERT INTO projects (id, name, app_setting_id) VALUES (1, 'GFA', 1);
+INSERT INTO projects (id, name, app_setting_id) VALUES (2, 'Home', 1);
 
 -- contexts
-INSERT INTO contexts (id, name, setting_id) VALUES (1, 'Online', 1);
-INSERT INTO contexts (id, name, setting_id) VALUES (2, 'Phone', 1);
+INSERT INTO contexts (id, name, app_setting_id) VALUES (1, 'Online', 1);
+INSERT INTO contexts (id, name, app_setting_id) VALUES (2, 'Phone', 1);
 
 -- users
 -- decryptedPassword: 'a'

@@ -18,7 +18,7 @@ public class Context {
   private Integer id;
 
   @ManyToOne (fetch = FetchType.LAZY)
-  private Setting setting;
+  private ApplicationSetting appSetting;
 
   private String name;
   //endregion
@@ -43,8 +43,8 @@ public class Context {
     this.name = name;
   }
 
-  public void setSetting(Setting setting) {
-    this.setting = setting;
+  public void setAppSetting(ApplicationSetting setting) {
+    this.appSetting = setting;
   }
 
   @Override

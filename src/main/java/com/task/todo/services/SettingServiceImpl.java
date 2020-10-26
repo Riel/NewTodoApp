@@ -6,7 +6,7 @@ import com.task.todo.exceptions.ContextDoesNotExistException;
 import com.task.todo.exceptions.ProjectDoesNotExistException;
 import com.task.todo.models.Context;
 import com.task.todo.models.Project;
-import com.task.todo.models.Setting;
+import com.task.todo.models.ApplicationSetting;
 import com.task.todo.repositories.SettingRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,58 +63,58 @@ public class SettingServiceImpl {
 
 
   public void addProjectToSetting(String projectName){
-    Setting setting = getSetting();
+    ApplicationSetting appSetting = getSetting();
 
-    if (setting.getProjects().stream().filter(p -> p.getName().equals(projectName)).findFirst().isPresent()) {
+    if (appSetting.getProjects().stream().filter(p -> p.getName().equals(projectName)).findFirst().isPresent()) {
       // TODO: send message here
       return;
     }
 
-    setting.addProject(new Project(projectName.trim()));
-    saveSetting(setting);
+    appSetting.addProject(new Project(projectName.trim()));
+    saveSetting(appSetting);
   }
 
   public void addContextToSetting(String contextName){
-    Setting setting = getSetting();
+    ApplicationSetting appSetting = getSetting();
 
-    if (setting.getContexts().stream().filter(c -> c.getName().equals(contextName)).findFirst().isPresent()) {
+    if (appSetting.getContexts().stream().filter(c -> c.getName().equals(contextName)).findFirst().isPresent()) {
       // TODO: send message here
       return;
     }
 
-    setting.addContext(new Context(contextName.trim()));
-    saveSetting(setting);
+    appSetting.addContext(new Context(contextName.trim()));
+    saveSetting(appSetting);
   }
 
 
-  public void saveSetting(Setting setting) {
+  public void saveSetting(ApplicationSetting setting) {
     settingRepository.save(setting);
   }
 
   public void deleteProject(String projectName) {
-    Setting setting = getSetting();
-    Project project = setting.getProjects().stream()
+    ApplicationSetting appSetting = getSetting();
+    Project project = appSetting.getProjects().stream()
         .filter(p -> p.getName().equals(projectName))
         .findFirst()
         .orElseThrow(() -> new ProjectDoesNotExistException(projectName));
-    project.setSetting(null);
-    setting.getProjects().remove(project);
-    saveSetting(setting);
+    project.setAppSetting(null);
+    appSetting.getProjects().remove(project);
+    saveSetting(appSetting);
   }
 
   public void deleteContext(String contextName) {
-    Setting setting = getSetting();
-    Context context = setting.getContexts().stream()
+    ApplicationSetting appSetting = getSetting();
+    Context context = appSetting.getContexts().stream()
         .filter(c -> c.getName().equals(contextName))
         .findFirst()
         .orElseThrow(() -> new ContextDoesNotExistException(contextName));
-    context.setSetting(null);
-    setting.getContexts().remove(context);
-    saveSetting(setting);
+    context.setAppSetting(null);
+    appSetting.getContexts().remove(context);
+    saveSetting(appSetting);
   }
 
   //TODO: handle exceptions
-  private Setting getSetting(){
+  private ApplicationSetting getSetting(){
     return settingRepository.findById(1L).orElseThrow(NoSuchElementException::new);
   }
 }

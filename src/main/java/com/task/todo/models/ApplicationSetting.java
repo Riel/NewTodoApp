@@ -12,23 +12,23 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "settings")
-public class Setting {
+@Table(name = "application_settings")
+public class ApplicationSetting {
 
   //region Fields
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @OneToMany (cascade = CascadeType.ALL, mappedBy = "setting")
+  @OneToMany (cascade = CascadeType.ALL, mappedBy = "appSetting")
   private List<Context> contexts;
 
-  @OneToMany (cascade = CascadeType.ALL, mappedBy = "setting")
+  @OneToMany (cascade = CascadeType.ALL, mappedBy = "appSetting")
   private List<Project> projects;
   //endregion
 
 
-  public Setting() {
+  public ApplicationSetting() {
     contexts = new ArrayList<>();
     projects = new ArrayList<>();
   }
@@ -54,11 +54,11 @@ public class Setting {
 
   public void addContext(Context context) {
     contexts.add(context);
-    context.setSetting(this);
+    context.setAppSetting(this);
   }
 
   public void addProject(Project project) {
     projects.add(project);
-    project.setSetting(this);
+    project.setAppSetting(this);
   }
 }
