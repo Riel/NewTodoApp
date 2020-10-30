@@ -39,6 +39,10 @@ public class User {
 
   @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST},
       fetch = FetchType.LAZY, mappedBy = "user")
+  private UserSetting setting;
+
+  @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST},
+      fetch = FetchType.LAZY, mappedBy = "user")
   private VerificationToken verificationToken;
   //endregion
 
@@ -123,6 +127,13 @@ public class User {
     return todos;
   }
 
+  public UserSetting getSetting() {
+    return setting;
+  }
+
+  public void setSetting(UserSetting setting) {
+    this.setting = setting;
+  }
 
   public VerificationToken getVerificationToken() {
     return verificationToken;

@@ -1,6 +1,6 @@
 package com.task.todo.controllers;
 
-import com.task.todo.services.SettingServiceImpl;
+import com.task.todo.services.AppSettingServiceImpl;
 import com.task.todo.services.UserServiceImpl;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/settings")
 public class SettingController {
 
-  private SettingServiceImpl settingService;
+  private AppSettingServiceImpl settingService;
   private UserServiceImpl userService;
 
   @Autowired
-  public SettingController(SettingServiceImpl settingService,
+  public SettingController(AppSettingServiceImpl settingService,
                            UserServiceImpl userService) {
     this.settingService = settingService;
     this.userService = userService;

@@ -2,9 +2,11 @@ package com.task.todo.controllers;
 
 import com.task.todo.dtos.FullTodoDTO;
 import com.task.todo.dtos.SimpleTodoDTO;
-import com.task.todo.services.SettingServiceImpl;
+import com.task.todo.models.UserSetting;
+import com.task.todo.services.AppSettingServiceImpl;
 import com.task.todo.services.TodoServiceImpl;
 import com.task.todo.services.UserServiceImpl;
+import com.task.todo.services.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,23 +18,36 @@ import java.util.List;
 public class TodoController {
 
   private TodoServiceImpl todoService;
-  private SettingServiceImpl settingService;
+  private AppSettingServiceImpl settingService;
   private UserServiceImpl userService;
+  private UserSettingService userSettingService;
 
   @Autowired
   public TodoController(TodoServiceImpl todoService,
-                        SettingServiceImpl settingService,
-                        UserServiceImpl userService) {
+                        AppSettingServiceImpl settingService,
+                        UserServiceImpl userService,
+                        UserSettingService userSettingService) {
     this.todoService = todoService;
     this.settingService = settingService;
     this.userService = userService;
+    this.userSettingService = userSettingService;
   }
 
   @RequestMapping(value = "/list", method = RequestMethod.GET)
-  public String getMainPage(Model model,
+  public String getMainPage(Model model){
+
+    UserSetting userSetting = userSettingService.getActiveUserSetting();
+    return getFilteredMainPage(model, userSetting.getLookUpAssigneeName(),
+        userSetting.getLookUpProjectName(), userSetting.getLookUpContextName());
+  }
+
+  @RequestMapping(value = "/filteredlist", method = RequestMethod.GET)
+  public String getFilteredMainPage(Model model,
                             @RequestParam (required = false) String ownerName,
                             @RequestParam (required = false) String projectName,
                             @RequestParam (required = false) String contextName){
+
+    userSettingService.updateActiveUserSetting(ownerName,projectName, contextName);
 
     List<SimpleTodoDTO> filteredTodos = todoService.getFilteredTodos(ownerName, projectName, contextName);
 
@@ -94,7 +109,7 @@ public class TodoController {
                            @PathVariable String project,
                            @PathVariable String context, Model model) {
     todoService.deleteTodoById(id);
-    return getMainPage(model,owner, project,context);
+    return getFilteredMainPage(model,owner, project,context);
   }
 
   @RequestMapping(path = "/id/{id}/owner/{owner}/project/{project}/context/{context}/done", method = RequestMethod.GET)
@@ -103,7 +118,7 @@ public class TodoController {
                              @PathVariable String project,
                              @PathVariable String context, Model model) {
     todoService.completeTodo(id);
-    return getMainPage(model,owner, project,context);
+    return getFilteredMainPage(model,owner, project,context);
   }
 
   /*@Transactional

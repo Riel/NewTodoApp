@@ -4,7 +4,7 @@
 <body>
 <div th:fragment="nav_bar_with_search_form">
     <nav class="navbar navbar-expand-md fixed-top bg-dark">
-        <form name="searchForm" action="/todo/list" th:method="get" style="vertical-align: bottom">
+        <form name="searchForm" action="/todo/filteredlist" th:method="get" style="vertical-align: bottom">
             <select name="ownerName" id="owner" onchange="document.forms['searchForm'].submit();" style="display: inline">
                 <option value="0" selected disabled hidden>Select owner</option>
                 <option th:each="owner : ${owners}"

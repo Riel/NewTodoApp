@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler
+  public String handleUserSettingDoesNotExistException(UserSettingDoesNotExistException e) {
+    //User does not exist with given id/name : e.getMessage()
+    return "";
+  }
+
+  @ExceptionHandler
   public String handleUserDoesNotExistException(TodoDoesNotExistException e) {
     //Todo does not exist with given id/name : e.getMessage()
     return "";

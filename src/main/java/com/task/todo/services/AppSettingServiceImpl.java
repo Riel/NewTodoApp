@@ -17,14 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SettingServiceImpl {
+public class AppSettingServiceImpl {
 
   private SettingRepository settingRepository;
   private QueryService queryService;
 
   @Autowired
-  public SettingServiceImpl(SettingRepository settingRepository,
-                            QueryService queryService) {
+  public AppSettingServiceImpl(SettingRepository settingRepository,
+                               QueryService queryService) {
     this.settingRepository = settingRepository;
     this.queryService = queryService;
   }
