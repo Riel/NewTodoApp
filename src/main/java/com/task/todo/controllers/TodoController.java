@@ -37,8 +37,8 @@ public class TodoController {
   public String getMainPage(Model model){
 
     UserSetting userSetting = userSettingService.getActiveUserSetting();
-    return getFilteredMainPage(model, userSetting.getLookUpAssigneeName(),
-        userSetting.getLookUpProjectName(), userSetting.getLookUpContextName());
+    return getFilteredMainPage(model, userSetting.getLookupAssingeeName(),
+        userSetting.getLookupProjectName(), userSetting.getLookupContextName());
   }
 
   @RequestMapping(value = "/filteredlist", method = RequestMethod.GET)
@@ -47,7 +47,7 @@ public class TodoController {
                             @RequestParam (required = false) String projectName,
                             @RequestParam (required = false) String contextName){
 
-    userSettingService.updateActiveUserSetting(ownerName,projectName, contextName);
+    userSettingService.updateActiveUserSetting(ownerName, projectName, contextName);
 
     List<SimpleTodoDTO> filteredTodos = todoService.getFilteredTodos(ownerName, projectName, contextName);
 

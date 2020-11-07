@@ -19,11 +19,14 @@ public class UserSetting {
 
   private boolean displayDone;
 
-  private String lookUpProjectName;
+  @OneToOne(fetch = FetchType.LAZY)
+  private Project lookUpProject;
 
-  private String lookUpContextName;
+  @OneToOne(fetch = FetchType.LAZY)
+  private Context lookUpContext;
 
-  private String lookUpAssigneeName;
+  @OneToOne(fetch = FetchType.LAZY)
+  private User lookUpAssignee;
 
   @OneToOne(fetch = FetchType.LAZY)
   private User user;
@@ -39,28 +42,28 @@ public class UserSetting {
     this.displayDone = displayDone;
   }
 
-  public String getLookUpProjectName() {
-    return lookUpProjectName;
+  public Project getLookUpProject() {
+    return lookUpProject;
   }
 
-  public void setLookUpProjectName(String lookUpProject) {
-    this.lookUpProjectName = lookUpProject;
+  public void setLookUpProject(Project lookUpProject) {
+    this.lookUpProject = lookUpProject;
   }
 
-  public String getLookUpContextName() {
-    return lookUpContextName;
+  public Context getLookUpContext() {
+    return lookUpContext;
   }
 
-  public void setLookUpContextname(String lookUpContext) {
-    this.lookUpContextName = lookUpContext;
+  public void setLookUpContext(Context lookUpContext) {
+    this.lookUpContext = lookUpContext;
   }
 
-  public String getLookUpAssigneeName() {
-    return lookUpAssigneeName;
+  public User getLookUpAssignee() {
+    return lookUpAssignee;
   }
 
-  public void setLookUpAssigneeName(String lookUpAssigneeName) {
-    this.lookUpAssigneeName = lookUpAssigneeName;
+  public void setLookUpAssignee(User lookUpAssignee) {
+    this.lookUpAssignee = lookUpAssignee;
   }
 
   public User getUser() {
@@ -71,4 +74,16 @@ public class UserSetting {
     this.user = user;
   }
   //endregion
+
+  public String getLookupAssingeeName(){
+    return lookUpAssignee == null ? null : lookUpAssignee.getUsername();
+  }
+
+  public String getLookupProjectName(){
+    return lookUpProject == null ? null : lookUpProject.getName();
+  }
+
+  public String getLookupContextName(){
+    return lookUpContext == null ? null : lookUpContext.getName();
+  }
 }

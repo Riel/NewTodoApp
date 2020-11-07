@@ -25,10 +25,9 @@ INSERT INTO verification_tokens (id, expiry_date, token, user_id) VALUES (2, '20
 INSERT INTO verification_tokens (id, expiry_date, token, user_id) VALUES (3, '2020-06-05 12:00:00', '350c7fa4-e2d0-11ea-87d0-0242ac130003', 3);
 INSERT INTO verification_tokens (id, expiry_date, token, user_id) VALUES (4, '2020-06-05 12:00:00', '3abbe192-e2d0-11ea-87d0-0242ac130003', 4);
 
--- users
--- TODO: consider using entities here
-INSERT INTO user_settings (id, user_id, look_up_assignee_name, look_up_project_name, look_up_context_name, display_done) VALUES (1, 1, 'Riel', 'GFA', 'Online', 0);
-INSERT INTO user_settings (id, user_id, look_up_assignee_name, look_up_project_name, look_up_context_name, display_done) VALUES (2, 2, 'Khanee', 'Home', 'Home', 0);
+-- user_settings
+INSERT INTO user_settings (id, user_id, look_up_assignee_id, look_up_project_id, look_up_context_id, display_done) VALUES (1, 1, 1, 1, 1, 0);
+INSERT INTO user_settings (id, user_id, look_up_assignee_id, look_up_project_id, look_up_context_id, display_done) VALUES (2, 2, 2, 2, 2, 0);
 
 -- todos
 insert into todos (id, title, assignee_id, creator_id, description, link, project_id, context_id, priority, status, is_deleted, is_public, is_instant, history, creation_date, due_date, completion_date ) values (1, 'Wash', 1, 2, 'fast', 'https://www.wash.hu', 1, 1, 1, 1, 0, 1, 0, 'none', '2020-06-05 12:00:00', '2020-06-05 12:00:00', '2020-06-05 12:00:00');

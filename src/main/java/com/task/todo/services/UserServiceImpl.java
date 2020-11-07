@@ -40,6 +40,11 @@ public class UserServiceImpl {
     return optionalUser.orElseThrow(() -> new UserDoesNotExistException(authenticatedUserId));
   }
 
+  public User getUserByName(String userName) {
+    return userRepository.findFirstByUsername(userName)
+        .orElseThrow(() -> new UserDoesNotExistException(userName));
+  }
+
   private long getAuthenticatedUserId() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     if (!(principal instanceof TodoUserDetails)) {

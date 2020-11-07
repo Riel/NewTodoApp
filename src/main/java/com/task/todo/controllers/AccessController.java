@@ -23,7 +23,8 @@ public class AccessController {
   private UserServiceImpl userService;
   private EmailService emailService;
 
-  // TODO: Create a side panel for filtering - ordering settings - add "hide done" option
+  // TODO: add "hide done" option to filtering
+  // TODO: Create a side panel for filtering
   // TODO: display completition date if completed
 
   @Autowired
