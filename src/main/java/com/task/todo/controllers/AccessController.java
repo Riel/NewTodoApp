@@ -43,6 +43,7 @@ public class AccessController {
     return "login";
   }
 
+  /*
   @RequestMapping(value = "register", method = RequestMethod.GET)
   public String displayRegisterForm(Model model,
                                     @ModelAttribute RegistrationDTO registrationDTO,
@@ -69,7 +70,7 @@ public class AccessController {
     emailService.sendVerificationEmail(user);
     redirectAttributes.addFlashAttribute("notifiedEmail", user.getEmail());
     return "redirect:/register";
-  }
+  }*/
 
   @RequestMapping(path = "verify", method = RequestMethod.GET)
   public String handleVerificationRequest(@RequestParam(name = "token") String token, Model model) {
