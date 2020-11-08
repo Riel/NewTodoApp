@@ -93,5 +93,23 @@ CREATE TABLE IF NOT EXISTS todos (
     FOREIGN KEY (project_id)                REFERENCES projects (id)
 );
 
+-- settings
+INSERT INTO application_settings (id) VALUES (1);
+
+-- projects
+INSERT INTO projects (id, name, app_setting_id) VALUES (1, 'GFA', 1);
+
+-- contexts
+INSERT INTO contexts (id, name, app_setting_id) VALUES (1, 'Phone', 1);
+
+-- users
+INSERT INTO users (id, active, verified, email, password, registration_date, roles, username) VALUES (1, 1, 1, 'riel@riel.hu', '$2a$10$DqddoybQfPEFT.6Lto0E0uQxlpZXJb7Z9qmHOi2dtmF70iuRGfOQe', '2020-11-15 12:00:00', 'ADMIN;USER', 'Riel');
+
+-- verification_tokens
+INSERT INTO verification_tokens (id, expiry_date, token, user_id) VALUES (1, '2020-06-05 12:00:00', '589c5730-3bcb-4eb9-a971-4446f688ab9d', 1);
+
+-- user_settings
+INSERT INTO user_settings (id, user_id, lookup_assignee_id, lookup_project_id, lookup_context_id, display_done) VALUES (1, 1, 1, 1, 1, 0);
+
 
 
