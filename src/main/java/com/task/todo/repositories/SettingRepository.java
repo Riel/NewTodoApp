@@ -5,7 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SettingRepository extends CrudRepository<ApplicationSetting, Long> {
-
+public interface SettingRepository extends CrudRepository<ApplicationSetting, Integer> {
   //TODO create custom query to get the first setting
 }

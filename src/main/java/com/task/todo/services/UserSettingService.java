@@ -42,25 +42,25 @@ public class UserSettingService {
     UserSetting setting = getActiveUserSetting();
 
     if (canUpdate(assigneeName)){
-      setting.setLookUpAssignee(userService.getUserByName(assigneeName));
+      setting.setLookupAssignee(userService.getUserByName(assigneeName));
     } else {
-      setting.setLookUpAssignee(null);
+      setting.setLookupAssignee(null);
     }
 
     if (canUpdate(projectName)) {
       Project project = projectRepository.findByName(projectName)
           .orElseThrow(() -> new ProjectDoesNotExistException(projectName));
-      setting.setLookUpProject(project);
+      setting.setLookupProject(project);
     } else {
-      setting.setLookUpProject(null);
+      setting.setLookupProject(null);
     }
 
     if (canUpdate(contextName)) {
       Context context = contextRepository.findByName(contextName)
           .orElseThrow(() -> new ContextDoesNotExistException(contextName));
-      setting.setLookUpContext(context);
+      setting.setLookupContext(context);
     } else {
-      setting.setLookUpContext(null);
+      setting.setLookupContext(null);
     }
 
     settingRepository.save(setting);

@@ -8,7 +8,7 @@ public enum Status {
   PROGRESS("In progress"),
   ON_HOLD("On hold"),
   BLOCKED("Blocked"),
-  FINISHED("Done");
+  COMPLETED("Done");
 
   private final String displayName;
 

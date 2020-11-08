@@ -61,8 +61,7 @@ public class TodoUserDetails implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    //return this.user.isActive() && user.isVerified();
-    return true;
+    return this.user.isActive() && user.isVerified();
   }
 
   public Long getUserId() {

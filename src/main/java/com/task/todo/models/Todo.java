@@ -4,7 +4,10 @@ import com.task.todo.enums.Priority;
 import com.task.todo.enums.Status;
 import java.time.LocalDate;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,8 +34,14 @@ public class Todo implements Comparable<Todo> {
   @ManyToOne (cascade = CascadeType.PERSIST)
   private Context context;
 
+  @Enumerated(EnumType.STRING)
+  @Column(columnDefinition = "ENUM('MUST','HIGH','MEDIUM','LOW','NONE')", nullable = false)
   private Priority priority;
+
+  @Enumerated(EnumType.STRING)
+  @Column(columnDefinition = "ENUM('NOT_STARTED','PROGRESS','ON_HOLD','BLOCKED','COMPLETED')", nullable = false)
   private Status status;
+
   private boolean isDeleted;
   private boolean isPublic;
   private boolean isInstant;

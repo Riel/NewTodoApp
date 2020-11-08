@@ -20,13 +20,13 @@ public class UserSetting {
   private boolean displayDone;
 
   @OneToOne(fetch = FetchType.LAZY)
-  private Project lookUpProject;
+  private Project lookupProject;
 
   @OneToOne(fetch = FetchType.LAZY)
-  private Context lookUpContext;
+  private Context lookupContext;
 
   @OneToOne(fetch = FetchType.LAZY)
-  private User lookUpAssignee;
+  private User lookupAssignee;
 
   @OneToOne(fetch = FetchType.LAZY)
   private User user;
@@ -42,28 +42,28 @@ public class UserSetting {
     this.displayDone = displayDone;
   }
 
-  public Project getLookUpProject() {
-    return lookUpProject;
+  public Project getLookupProject() {
+    return lookupProject;
   }
 
-  public void setLookUpProject(Project lookUpProject) {
-    this.lookUpProject = lookUpProject;
+  public void setLookupProject(Project lookupProject) {
+    this.lookupProject = lookupProject;
   }
 
-  public Context getLookUpContext() {
-    return lookUpContext;
+  public Context getLookupContext() {
+    return lookupContext;
   }
 
-  public void setLookUpContext(Context lookUpContext) {
-    this.lookUpContext = lookUpContext;
+  public void setLookupContext(Context lookupContext) {
+    this.lookupContext = lookupContext;
   }
 
-  public User getLookUpAssignee() {
-    return lookUpAssignee;
+  public User getLookupAssignee() {
+    return lookupAssignee;
   }
 
-  public void setLookUpAssignee(User lookUpAssignee) {
-    this.lookUpAssignee = lookUpAssignee;
+  public void setLookupAssignee(User lookupAssignee) {
+    this.lookupAssignee = lookupAssignee;
   }
 
   public User getUser() {
@@ -76,14 +76,14 @@ public class UserSetting {
   //endregion
 
   public String getLookupAssingeeName(){
-    return lookUpAssignee == null ? null : lookUpAssignee.getUsername();
+    return lookupAssignee == null ? null : lookupAssignee.getUsername();
   }
 
   public String getLookupProjectName(){
-    return lookUpProject == null ? null : lookUpProject.getName();
+    return lookupProject == null ? null : lookupProject.getName();
   }
 
   public String getLookupContextName(){
-    return lookUpContext == null ? null : lookUpContext.getName();
+    return lookupContext == null ? null : lookupContext.getName();
   }
 }

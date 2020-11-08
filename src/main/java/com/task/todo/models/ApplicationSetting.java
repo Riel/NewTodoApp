@@ -18,7 +18,7 @@ public class ApplicationSetting {
   //region Fields
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private int id;
 
   @OneToMany (cascade = CascadeType.ALL, mappedBy = "appSetting")
   private List<Context> contexts;
@@ -34,11 +34,11 @@ public class ApplicationSetting {
   }
 
   //region Getters & Setters
-  public Long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(int id) {
     this.id = id;
   }
 

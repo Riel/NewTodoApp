@@ -115,7 +115,7 @@ public class AppSettingServiceImpl {
 
   //TODO: handle exceptions
   private ApplicationSetting getSetting(){
-    return settingRepository.findById(1L).orElseThrow(NoSuchElementException::new);
+    return settingRepository.findById(1).orElseThrow(NoSuchElementException::new);
   }
 }
 

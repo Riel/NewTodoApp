@@ -76,7 +76,7 @@ public class QueryService {
       hasPreviousFilter = true;
     }
 
-    builder.append((hasPreviousFilter ? " AND " : " WHERE ") + "status <> " + Status.FINISHED.ordinal());
+    builder.append((hasPreviousFilter ? " AND " : " WHERE ") + "status <> " + Status.COMPLETED.ordinal());
 
     String query = builder.append(getOrderString()).toString();
     return entityManager.createNativeQuery(query, Todo.class);

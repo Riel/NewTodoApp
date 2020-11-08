@@ -116,7 +116,7 @@ public class TodoServiceImpl {
 
   public void completeTodo(Long id){
     Todo todo = getTodoById(id);
-    todo.setStatus(Status.FINISHED);
+    todo.setStatus(Status.COMPLETED);
     todoRepository.save(todo);
   }
   //endregion
