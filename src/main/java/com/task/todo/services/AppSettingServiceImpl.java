@@ -4,10 +4,13 @@ import com.task.todo.enums.Priority;
 import com.task.todo.enums.Status;
 import com.task.todo.exceptions.ContextDoesNotExistException;
 import com.task.todo.exceptions.ProjectDoesNotExistException;
+import com.task.todo.models.ApplicationSetting;
 import com.task.todo.models.Context;
 import com.task.todo.models.Project;
-import com.task.todo.models.ApplicationSetting;
+import com.task.todo.repositories.ContextRepository;
+import com.task.todo.repositories.ProjectRepository;
 import com.task.todo.repositories.SettingRepository;
+import com.task.todo.repositories.TodoRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,12 +23,21 @@ import org.springframework.stereotype.Service;
 public class AppSettingServiceImpl {
 
   private SettingRepository settingRepository;
+  private ProjectRepository projectRepository;
+  private ContextRepository contextRepository;
+  private TodoRepository todoRepository;
   private QueryService queryService;
 
   @Autowired
   public AppSettingServiceImpl(SettingRepository settingRepository,
+                               ProjectRepository projectRepository,
+                               ContextRepository contextRepository,
+                               TodoRepository todoRepository,
                                QueryService queryService) {
     this.settingRepository = settingRepository;
+    this.projectRepository = projectRepository;
+    this.contextRepository = contextRepository;
+    this.todoRepository = todoRepository;
     this.queryService = queryService;
   }
 
@@ -97,8 +109,10 @@ public class AppSettingServiceImpl {
         .filter(p -> p.getName().equals(projectName))
         .findFirst()
         .orElseThrow(() -> new ProjectDoesNotExistException(projectName));
-    project.setAppSetting(null);
     appSetting.getProjects().remove(project);
+    // TODO: decide what to do when a project is deleted that has Todos!
+    todoRepository.findAllByProject(project).stream().forEach(t -> t.setProject(null));
+    projectRepository.delete(project);
     saveSetting(appSetting);
   }
 
@@ -108,8 +122,10 @@ public class AppSettingServiceImpl {
         .filter(c -> c.getName().equals(contextName))
         .findFirst()
         .orElseThrow(() -> new ContextDoesNotExistException(contextName));
-    context.setAppSetting(null);
     appSetting.getContexts().remove(context);
+    // TODO: decide what to do when a context is deleted that has Todos!
+    todoRepository.findAllByContext(context).stream().forEach(t -> t.setContext(null));
+    contextRepository.delete(context);
     saveSetting(appSetting);
   }
 
