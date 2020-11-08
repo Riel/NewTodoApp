@@ -169,12 +169,14 @@ public class TodoServiceImpl {
     String contextName = dto.getContext();
     Project project = projectRepository.findByName(projectName).orElseThrow(() -> new ProjectDoesNotExistException(projectName));
     Context todoContext = contextRepository.findByName(contextName).orElseThrow(() -> new ContextDoesNotExistException(contextName));
+    String link = dto.getLink() == "" ?  null : dto.getLink();
 
 
     mapper.createTypeMap(FullTodoDTO.class, Todo.class)
         .setPostConverter(context -> {
       context.getDestination().setProject(project);
       context.getDestination().setContext(todoContext);
+      context.getDestination().setLink(link);
 
       if (dto.getId() != null){
         // TODO: handle error here
