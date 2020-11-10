@@ -67,6 +67,6 @@ public class UserSettingService {
   }
 
   private boolean canUpdate(String propertyName){
-    return propertyName != null && !propertyName.equals("Select all");
+    return propertyName != null && !propertyName.equals("null") && !propertyName.equals("Select all");
   }
 }

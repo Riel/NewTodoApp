@@ -23,6 +23,7 @@ public class AccessController {
   private UserServiceImpl userService;
   private EmailService emailService;
 
+  // TODO: When a project is deleted clear filter for it - same with context
   // TODO: Complete registration so that user has settings
   // TODO: add "hide done" option to filtering
   // TODO: Create a side panel for filtering
