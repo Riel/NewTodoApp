@@ -23,6 +23,8 @@ public class AccessController {
   private UserServiceImpl userService;
   private EmailService emailService;
 
+  // TODO: Make Status work with icons
+  // https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.presentation-process.com%2Fwp-content%2Fuploads%2Fpptx-flat-design-business-icon-002.jpg&imgrefurl=https%3A%2F%2Fwww.presentation-process.com%2Fflat-design-powerpoint-business-icons.html&docid=g_KRkJlGbmnkTM&tbnid=NaPokA9YwAITaM&vet=1&w=640&h=360&itg=1&hl=hu-HU&source=sh%2Fx%2Fim
   // TODO: When a project is deleted clear filter for it - same with context
   // TODO: Complete registration so that user has settings
   // TODO: add "hide done" option to filtering

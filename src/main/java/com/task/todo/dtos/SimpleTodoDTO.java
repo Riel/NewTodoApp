@@ -24,7 +24,7 @@ public class SimpleTodoDTO {
   private User creator;
   private User assignee;
 
-  private String priorityDisplayColor;
+  private String priorityDisplayClass;
   private String dueDateDisplayColor;
   private String projectDisplayColor;
   private String contextDisplayColor;
@@ -155,8 +155,8 @@ public class SimpleTodoDTO {
   //endregion
 
   //region Indirect Setters
-  public void setPriorityDisplayColor(String priorityDisplayColor) {
-    this.priorityDisplayColor = priorityDisplayColor;
+  public void setPriorityDisplayClass(String priorityDisplayClass) {
+    this.priorityDisplayClass = priorityDisplayClass;
   }
 
   public void setDueDateDisplayColor(String dueDateDisplayColor) {
@@ -181,8 +181,8 @@ public class SimpleTodoDTO {
     return link != null;
   }
 
-  public String getPriorityDisplayColor(){
-    return priorityDisplayColor;
+  public String getPriorityDisplayClass(){
+    return priorityDisplayClass;
   }
 
   public String getDueDateDisplayColor(){

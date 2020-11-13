@@ -134,7 +134,7 @@ public class TodoServiceImpl {
     TodoColorizer colorizer = new TodoColorizer(todo);
     mapper.createTypeMap(Todo.class, SimpleTodoDTO.class)
         .setPostConverter(context -> {
-          context.getDestination().setPriorityDisplayColor(colorizer.getPriorityDisplayColor());
+          context.getDestination().setPriorityDisplayClass(colorizer.getPriorityDisplayClass());
           context.getDestination().setDueDateDisplayColor(colorizer.getDueDateDisplayColor());
           context.getDestination().setProjectDisplayColor(colorizer.getProjectDisplayColor());
           context.getDestination().setContextDisplayColor(colorizer.getContextDisplayColor());

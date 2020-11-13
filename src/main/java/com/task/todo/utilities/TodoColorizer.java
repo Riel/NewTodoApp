@@ -61,19 +61,19 @@ public class TodoColorizer {
     }
   }
 
-  public String getPriorityDisplayColor(){
+  public String getPriorityDisplayClass(){
     Priority priority = todo.getPriority();
 
     if(priority.ordinal() == 0){
-      return TodoColors.BUTTON_RED;
+      return "must-prio";
     } else if (priority.ordinal() == 1){
-      return TodoColors.BUTTON_ORANGE;
+      return "high-prio";
     } else if (priority.ordinal() == 2){
-      return TodoColors.BUTTON_YELLOW;
+      return "medium-prio";
     } else if (priority.ordinal() == 3){
-      return TodoColors.BUTTON_GREEN;
+      return "low-prio";
     } else {
-      return TodoColors.GRAY;
+      return "none-prio";
     }
   }
 }

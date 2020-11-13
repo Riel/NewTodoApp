@@ -10,13 +10,13 @@
                style="top: 68px; width: 100%">
         <!-- add: style="position:fixed ...-->
         <tr>
-            <th class="text-center" scope="col">ID</th>
+            <th class="text-center" scope="col"></th>
+            <th></th>
             <th>TITLE</th>
             <th>OWNER</th>
             <th>PROJECT</th>
             <th>CONTEXT</th>
             <th>DUE DATE</th>
-            <th>PRIORITY</th>
             <th>STATUS</th>
             <th></th>
             <th></th>
@@ -26,6 +26,9 @@
             <td class="text-center my-0 my-sm0"
                 th:style="'padding: 4px;' + (${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: white')"
                 th:text="${todo.getId()}"/>
+            <td class="text-center my-0 my-sm0" style="padding: 1px 4px">
+                <span th:class="prio" th:classappend="${todo.getPriorityDisplayClass()}"></span>
+            </td>
             <td th:style="'padding: 4px'">
                 <a th:style="${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: cornflowerblue'"
                    th:href="@{|/todo/${todo.getId()}/edit|}"
@@ -45,8 +48,6 @@
                 th:text="${todo.getContext()} == null ? 'not set' : ${todo.getContext()}"/>
             <td th:style="'padding: 4px;' + ${todo.getDueDateDisplayColor()}"
                 th:text="${todo.getDueDisplayDate()}" />
-            <td th:style="'padding: 4px;' + ${todo.getPriorityDisplayColor()}"
-                th:text="${todo.getPriority()}"/>
             <td th:style="'padding: 4px;' + (${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: white')"
                 th:text="${todo.getStatus()}"/>
             <td class="text-center my-0 my-sm0" style="padding: 1px 4px">
