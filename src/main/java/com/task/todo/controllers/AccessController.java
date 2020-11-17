@@ -93,4 +93,9 @@ public class AccessController {
     model.addAttribute("hasVerified", true);
     return "login";
   }
+
+  @RequestMapping(value = "", method = RequestMethod.GET)
+  public String displayTodoList() {
+    return "redirect:todo/list";
+  }
 }
