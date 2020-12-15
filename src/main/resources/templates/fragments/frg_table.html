@@ -16,7 +16,7 @@
             <th>OWNER</th>
             <th>PROJECT</th>
             <th>CONTEXT</th>
-            <th>DUE DATE</th>
+            <th></th>
             <th></th>
             <th></th>
             <th></th>
@@ -35,6 +35,10 @@
                    th:text="${todo.getTitle()}"
                    th:title="${todo.getDescription()}">
                 </a>
+                <span th:if="${todo.hasDueDate()}" th:style="'padding: 4px;' + ${todo.getDueDateDisplayColor()}"
+                      th:title="${todo.getDueDisplayDate()}"
+                      th:text="'(' + ${todo.getDaysToComplete()} + ')'">
+                </span>
                 <a th:if="${todo.hasLink()} == true" target="_blank"
                    th:style="${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: cornflowerblue' + '; letter-spacing: -2px'"
                    th:href="@{${todo.getLink()}}">>>>
@@ -46,10 +50,9 @@
                 th:text="${todo.getProject()} == null ? 'not set' : ${todo.getProject()}"/>
             <td th:style="'padding: 4px;' + ${todo.getContextDisplayColor()}"
                 th:text="${todo.getContext()} == null ? 'not set' : ${todo.getContext()}"/>
-            <td th:style="'padding: 4px;' + ${todo.getDueDateDisplayColor()}"
-                th:text="${todo.getDueDisplayDate()}" />
             <td th:style="'padding: 4px;'">
-                <img th:src="'/images/status/' + ${todo.getStatus().name()} + '.svg'" height="20px">
+                <img th:src="'/images/status/' + ${todo.getStatus().name()} + '.svg'" height="20px"
+                     th:title="${todo.getStatus()}">
             </td>
             <td class="text-center my-0 my-sm0" style="padding: 1px 4px">
                 <input style="font-size: 13px" th:disabled="${todo.getStatus().ordinal()} == 4"

@@ -1,9 +1,12 @@
 package com.task.todo.dtos;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import com.task.todo.enums.Priority;
 import com.task.todo.enums.Status;
 import com.task.todo.models.User;
 import java.time.LocalDate;
+import java.util.Calendar;
 
 public class SimpleTodoDTO {
 
@@ -177,28 +180,68 @@ public class SimpleTodoDTO {
   //endregion
 
   //region Indirect Getters
-  public boolean hasLink(){
+  public boolean hasLink() {
     return link != null;
   }
 
-  public String getPriorityDisplayClass(){
+  public String getPriorityDisplayClass() {
     return priorityDisplayClass;
   }
 
-  public String getDueDateDisplayColor(){
+  public String getDueDateDisplayColor() {
     return dueDateDisplayColor;
   }
 
-  public String getProjectDisplayColor(){
+  public String getProjectDisplayColor() {
     return projectDisplayColor;
   }
 
-  public String getContextDisplayColor(){
+  public String getContextDisplayColor() {
     return contextDisplayColor;
   }
 
   public String getDueDisplayDate() {
     return dueDisplayDate;
+  }
+
+  public String getDaysToComplete() {
+    long daysToComplete = DAYS.between(LocalDate.now(), dueDate);
+
+    if (daysToComplete == 0) {
+      return "today";
+    } else if (daysToComplete == 1) {
+      return "tomorrow";
+    } else if (daysToComplete > 1 && daysToComplete <= 7) {
+      return getWeekday((int) daysToComplete);
+    } else {
+      return String.valueOf(daysToComplete);
+    }
+  }
+
+  private String getWeekday(int daysToComplete) {
+    int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) + daysToComplete;
+    day = day > 7 ? day % 7 : day;
+
+    switch (day) {
+      case Calendar.SUNDAY:
+        return "Sunday";
+      case Calendar.MONDAY:
+        return "Monday";
+      case Calendar.TUESDAY:
+        return "Tuesday";
+      case Calendar.WEDNESDAY:
+        return "Wednesday";
+      case Calendar.THURSDAY:
+        return "Thursday";
+      case Calendar.FRIDAY:
+        return "Friday";
+      default:
+        return "Saturday";
+    }
+  }
+
+  public boolean hasDueDate() {
+    return dueDate != null;
   }
   //endregion
 }
