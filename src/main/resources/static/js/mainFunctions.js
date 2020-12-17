@@ -5,33 +5,6 @@ $(document).ready(function(){
         var modal = $(this);
         $('#delete-id').attr('onclick', 'deleteTodo('+id+')');
     });
-
-//BEGIN NEW SECTION
-    var tdRow=$('table').find('tr').eq(1);
-    
-    document.onscroll = function() {
-        var scroll = $(window).scrollTop();
-        if (scroll >= 50) {
-            $("thead").css({
-                "position": "fixed",
-                "top": "68px",
-                "transition": "all 0.5s ease-out"
-            });
-
-            $("th").each(function( index ) {
-                var width = tdRow.find("td:eq("+index+")").css("width");
-                $(this).css("width",width);
-            });
-
-        } else {
-            $("thead").css({
-                "position": "relative",
-                "top": "0px"
-            });
-        }
-    };
-
-//END
 });
 
 
