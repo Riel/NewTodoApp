@@ -27,6 +27,8 @@ public class SimpleTodoDTO {
   private User creator;
   private User assignee;
 
+  private boolean isSpaceHolder;
+
   private String priorityDisplayClass;
   private String dueDateDisplayColor;
   private String projectDisplayColor;
@@ -154,6 +156,14 @@ public class SimpleTodoDTO {
 
   public void setAssignee(User assignee) {
     this.assignee = assignee;
+  }
+
+  public boolean getIsSpaceHolder(){
+    return isSpaceHolder;
+  }
+
+  public void setIsSpaceHolder(boolean isSpaceHolder){
+    this.isSpaceHolder = isSpaceHolder;
   }
   //endregion
 

@@ -6,54 +6,58 @@
     <table class="table table-dark table-hover"
            style="font-size: 13px; border-bottom:1px solid #444c54; width: 100%; height: 100%">
 
-        <tr th:each="todo : ${todos}">
-            <td class="text-center my-0 my-sm0"
-                th:style="'padding: 4px;' + (${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: white')"
-                th:text="${todo.getId()}"/>
-            <td class="text-center my-0 my-sm0" style="padding: 1px 4px">
-                <span th:class="prio" th:classappend="${todo.getPriorityDisplayClass()}"></span>
+        <tr th:each="todo : ${todos}" >
+            <td th:if="${todo.getIsSpaceHolder()}" style="background-color: #444c54" colspan="100%">
             </td>
-            <td th:style="'padding: 4px'">
-                <a th:style="${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: cornflowerblue'"
-                   th:href="@{|/todo/${todo.getId()}/edit|}"
-                   th:text="${todo.getTitle()}"
-                   th:title="${todo.getDescription()}">
-                </a>
-                <span th:if="${todo.hasDueDate()}" th:style="'padding: 4px;' + ${todo.getDueDateDisplayColor()}"
-                      th:title="${todo.getDueDisplayDate()}"
-                      th:text="'(' + ${todo.getDaysToComplete()} + ')'">
+            <div th:unless="${todo.getIsSpaceHolder()}">
+                <td class="text-center my-0 my-sm0"
+                    th:style="'padding: 4px;' + (${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: white')"
+                    th:text="${todo.getId()}"/>
+                <td class="text-center my-0 my-sm0" style="padding: 1px 4px">
+                    <span th:class="prio" th:classappend="${todo.getPriorityDisplayClass()}"></span>
+                </td>
+                <td th:style="'padding: 4px'">
+                    <a th:style="${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: cornflowerblue'"
+                       th:href="@{|/todo/${todo.getId()}/edit|}"
+                       th:text="${todo.getTitle()}"
+                       th:title="${todo.getDescription()}">
+                    </a>
+                    <span th:if="${todo.hasDueDate()}" th:style="'padding: 4px;' + ${todo.getDueDateDisplayColor()}"
+                          th:title="${todo.getDueDisplayDate()}"
+                          th:text="'(' + ${todo.getDaysToComplete()} + ')'">
                 </span>
-                <a th:if="${todo.hasLink()} == true" target="_blank"
-                   th:style="${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: cornflowerblue' + '; letter-spacing: -2px'"
-                   th:href="@{${todo.getLink()}}">>>>
-                </a>
-            </td>
-            <td th:style="'padding: 4px;' + (${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: white')"
-                th:text="${todo.getAssignee().getUsername()}"/>
-            <td th:style="'padding: 4px;' + ${todo.getProjectDisplayColor()}"
-                th:text="${todo.getProject()} == null ? 'not set' : ${todo.getProject()}"/>
-            <td th:style="'padding: 4px;' + ${todo.getContextDisplayColor()}"
-                th:text="${todo.getContext()} == null ? 'not set' : 'C->' + ${todo.getContext()}"/>
-            <td th:style="'padding: 4px;'">
-                <img th:src="'/images/status/' + ${todo.getStatus().name()} + '.svg'" height="20px"
-                     th:title="${todo.getStatus()}">
-            </td>
-            <td class="text-center my-0 my-sm0" style="padding: 1px 4px">
-                <input style="font-size: 13px" th:disabled="${todo.getStatus().ordinal()} == 4"
-                       class="btn btn-outline-success my-0 my-sm0 d-flex justify-content-center btn-sm btn-block"
-                       type="button"
-                       th:onclick="'completeTodo('+${todo.getId()}+')'"
-                       value="Done">
-            </td>
-            <td class="text-center my-0 my-sm0" style="padding: 1px 4px">
-                <input style="font-size: 13px"
-                       class="btn btn-outline-danger my-0 my-sm0 d-flex justify-content-center btn-sm btn-block"
-                       data-toggle="modal"
-                       data-target="#myModal"
-                       th:data-id="${todo.getId()}"
-                       type="button"
-                       value="Delete">
-            </td>
+                    <a th:if="${todo.hasLink()} == true" target="_blank"
+                       th:style="${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: cornflowerblue' + '; letter-spacing: -2px'"
+                       th:href="@{${todo.getLink()}}">>>>
+                    </a>
+                </td>
+                <td th:style="'padding: 4px;' + (${todo.getStatus().ordinal()} == 4 ? 'color: gray' : 'color: white')"
+                    th:text="${todo.getAssignee().getUsername()}"/>
+                <td th:style="'padding: 4px;' + ${todo.getProjectDisplayColor()}"
+                    th:text="${todo.getProject()} == null ? 'not set' : ${todo.getProject()}"/>
+                <td th:style="'padding: 4px;' + ${todo.getContextDisplayColor()}"
+                    th:text="${todo.getContext()} == null ? 'not set' : 'C->' + ${todo.getContext()}"/>
+                <td th:style="'padding: 4px;'">
+                    <img th:src="'/images/status/' + ${todo.getStatus().name()} + '.svg'" height="20px"
+                         th:title="${todo.getStatus()}">
+                </td>
+                <td class="text-center my-0 my-sm0" style="padding: 1px 4px">
+                    <input style="font-size: 13px" th:disabled="${todo.getStatus().ordinal()} == 4"
+                           class="btn btn-outline-success my-0 my-sm0 d-flex justify-content-center btn-sm btn-block"
+                           type="button"
+                           th:onclick="'completeTodo('+${todo.getId()}+')'"
+                           value="Done">
+                </td>
+                <td class="text-center my-0 my-sm0" style="padding: 1px 4px">
+                    <input style="font-size: 13px"
+                           class="btn btn-outline-danger my-0 my-sm0 d-flex justify-content-center btn-sm btn-block"
+                           data-toggle="modal"
+                           data-target="#myModal"
+                           th:data-id="${todo.getId()}"
+                           type="button"
+                           value="Delete">
+                </td>
+            </div>
         </tr>
     </table>
     <div th:insert="fragments/frg_confirm_dialog :: delete_todo_dialog"></div>

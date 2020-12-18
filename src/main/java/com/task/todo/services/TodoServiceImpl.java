@@ -1,5 +1,7 @@
 package com.task.todo.services;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import com.task.todo.dtos.FullTodoDTO;
 import com.task.todo.dtos.SimpleTodoDTO;
 import com.task.todo.enums.Priority;
@@ -50,11 +52,44 @@ public class TodoServiceImpl {
   //region Collect todos
   public List<SimpleTodoDTO> getFilteredTodos(String ownerName, String projectName, String contextName){
     Query query = queryService.buildFilterQuery(ownerName, projectName, contextName);
-    List<Todo> todos = query.getResultList();
+    List<Todo> requestedTodos = query.getResultList();
 
-    return todos.stream()
+    List<SimpleTodoDTO> requestedDTOs = requestedTodos.stream()
         .map(todo -> convertTodoToSimpleTodoDTO(todo))
         .collect(Collectors.toList());
+
+    insertEmptyDTOs(requestedDTOs);
+    return requestedDTOs;
+  }
+
+  private void insertEmptyDTOs(List<SimpleTodoDTO> requestedDTOs) {
+    if (requestedDTOs.size() == 0){
+      return;
+    }
+
+    Optional<SimpleTodoDTO> firstActiveDTO = requestedDTOs.stream()
+        .filter(dto -> dto.hasDueDate() && getDaysAvailable(dto) >= 0 )
+        .findFirst();
+
+    Optional<SimpleTodoDTO> firstNoDueDateDTO = requestedDTOs.stream()
+        .filter(dto -> !dto.hasDueDate())
+        .findFirst();
+
+    insertPlaceholderBefore(requestedDTOs, firstActiveDTO);
+    insertPlaceholderBefore(requestedDTOs, firstNoDueDateDTO);
+  }
+
+  private void insertPlaceholderBefore(List<SimpleTodoDTO> requestedDTOs,
+                                       Optional<SimpleTodoDTO> firstActiveDTO) {
+    if (firstActiveDTO.isPresent()) {
+      SimpleTodoDTO placeHolder = new SimpleTodoDTO();
+      placeHolder.setIsSpaceHolder(true);
+      requestedDTOs.add(requestedDTOs.indexOf(firstActiveDTO.get()), placeHolder);
+    }
+  }
+
+  private long getDaysAvailable(SimpleTodoDTO dto){
+    return DAYS.between(LocalDate.now(), dto.getDueDate());
   }
 
   public FullTodoDTO getTodoDto(Long id) {
