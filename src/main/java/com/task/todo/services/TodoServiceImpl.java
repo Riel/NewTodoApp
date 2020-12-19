@@ -80,11 +80,12 @@ public class TodoServiceImpl {
   }
 
   private void insertPlaceholderBefore(List<SimpleTodoDTO> requestedDTOs,
-                                       Optional<SimpleTodoDTO> firstActiveDTO) {
-    if (firstActiveDTO.isPresent()) {
+                                       Optional<SimpleTodoDTO> firstDTO) {
+    int index = requestedDTOs.indexOf(firstDTO.get());
+    if (firstDTO.isPresent() && index > 0) {
       SimpleTodoDTO placeHolder = new SimpleTodoDTO();
       placeHolder.setIsSpaceHolder(true);
-      requestedDTOs.add(requestedDTOs.indexOf(firstActiveDTO.get()), placeHolder);
+      requestedDTOs.add(index, placeHolder);
     }
   }
 
